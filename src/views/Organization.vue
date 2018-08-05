@@ -3,14 +3,15 @@
     <code>
     {{JSON.stringify(organization, null, 2)}}
     </code>
+    <router-view />
   </div>
 </template>
 
 <script>
 export default {
-  name: 'organizations',
+  name: 'organization',
   props: {
-    id: {
+    organizationId: {
       type: String,
       required: true
     }
@@ -21,7 +22,7 @@ export default {
     }
   },
   async created() {
-    this.organization = await this.$udaru.getOrganization(this.id)
+    this.organization = await this.$udaru.getOrganization(this.organizationId)
   }
 }
 </script>

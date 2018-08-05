@@ -1,18 +1,21 @@
 <template>
   <div class="home">
-    <img src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div id="nav">
+      <router-link :to="{name: 'users', params: {organizationId}}">Users</router-link> | 
+      <router-link :to="{name: 'teams', params: {organizationId}}">Teams</router-link> | 
+      <router-link :to="{name: 'policies', params: {organizationId}}">Policies</router-link> | 
+      <router-link v-if="$auth.isAuthenticated()" to="/logout">Logout</router-link>
+      <router-link v-else to="/login">Login</router-link>
+    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
   name: 'home',
-  components: {
-    HelloWorld
+  props: {
+    organizationId: String
   }
 }
 </script>

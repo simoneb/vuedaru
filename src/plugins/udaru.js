@@ -7,10 +7,9 @@ export default function plugin(Vue) {
 
   Vue.prototype.$udaru = Vue.udaru = {
     async checkUserForLogin(userId) {
-      const {data} = await Vue.axios.get(
-        `/authorization/users/${encodeURIComponent(userId)}`,
-        {headers: {authorization: userId}}
-      )
+      const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(userId)}`, {
+        headers: {authorization: userId}
+      })
 
       return data
     },
@@ -19,17 +18,31 @@ export default function plugin(Vue) {
       return data
     },
     async getOrganization(id) {
-      const {data} = await Vue.axios.get(
-        `/authorization/organizations/${encodeURIComponent(id)}`
-      )
+      const {data} = await Vue.axios.get(`/authorization/organizations/${encodeURIComponent(id)}`)
       return data
     },
-    async getUsers() {
-      const {data} = await Vue.axios.get('/authorization/users')
+    async deleteOrganization(id) {
+      const {data} = await Vue.axios.delete(`/authorization/organizations/${encodeURIComponent(id)}`)
       return data
     },
-    async getPolicies() {
-      const {data} = await Vue.axios.get('/authorization/policies')
+    async createOrganization(organization) {
+      const {data} = await Vue.axios.post(`/authorization/organizations`, organization)
+      return data
+    },
+    async getUsers(organizationId) {
+      const {data} = await Vue.axios.get('/authorization/users', {headers: {org: organizationId}})
+      return data
+    },
+    async getTeams(organizationId) {
+      const {data} = await Vue.axios.get('/authorization/teams', {headers: {org: organizationId}})
+      return data
+    },
+    async getCurrentUser() {
+      const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(Vue.auth.getUserId())}`)
+      return data
+    },
+    async getPolicies(organizationId) {
+      const {data} = await Vue.axios.get('/authorization/policies', {headers: {org: organizationId}})
       return data
     }
   }

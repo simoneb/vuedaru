@@ -2,7 +2,7 @@
   <div class="policies">
     <ul v-if="policies">
       <li v-for="policy in policies.data" v-bind:key="policy.id">
-        {{policy.id}} - {{policy.name}}
+        <pre>{{JSON.stringify(policy, null, 2)}}</pre>
       </li>
     </ul>
   </div>
@@ -11,13 +11,16 @@
 <script>
 export default {
   name: 'policies',
+  props: {
+    organizationId: String
+  },
   data() {
     return {
       policies: null
     }
   },
   async created() {
-    this.policies = await this.$udaru.getPolicies()
+    this.policies = await this.$udaru.getPolicies(this.organizationId)
   }
 }
 </script>

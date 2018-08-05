@@ -13,7 +13,7 @@ export default function plugin(Vue) {
 
   axios.interceptors.request.use(config => {
     if (!config.headers.authorization) {
-      config.headers = {authorization: Vue.auth.getUserId()}
+      config.headers.authorization = Vue.auth.getUserId()
     }
     return config
   })

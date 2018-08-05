@@ -1,8 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
-import Organizations from './views/Organizations'
+import OrganizationSelect from './views/OrganizationSelect'
+import OrganizationCreate from './views/OrganizationCreate'
 import Organization from './views/Organization'
+import Organizations from './views/Organizations'
+import Teams from './views/Teams'
 import Users from './views/Users'
 import Policies from './views/Policies'
 import Login from './views/Login'
@@ -13,30 +16,55 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/',
-      name: 'home',
-      component: Home
-    },
-    {
       path: '/organizations',
-      name: 'organizations',
-      component: Organizations
+      component: Organizations,
+      meta: {requiresAuthentication: true, udaru: {}},
+      children: [
+        {path: '', redirect: {name: 'select-organization'}},
+        {
+          path: 'select',
+          name: 'select-organization',
+          component: OrganizationSelect
+        },
+        {
+          path: 'create',
+          name: 'create-organization',
+          component: OrganizationCreate
+        }
+      ]
     },
     {
-      path: '/organizations/:id',
-      name: 'organization',
+      path: '/',
+      component: Home,
       props: true,
-      component: Organization
-    },
-    {
-      path: '/users',
-      name: 'users',
-      component: Users
-    },
-    {
-      path: '/policies',
-      name: 'policies',
-      component: Policies
+      meta: {requiresAuthentication: true},
+      children: [
+        {path: '', redirect: {name: 'select-organization'}},
+        {
+          path: 'organizations/:organizationId',
+          name: 'organization',
+          props: true,
+          component: Organization
+        },
+        {
+          path: 'organizations/:organizationId/users',
+          name: 'users',
+          props: true,
+          component: Users
+        },
+        {
+          path: 'organizations/:organizationId/teams',
+          name: 'teams',
+          props: true,
+          component: Teams
+        },
+        {
+          path: 'organizations/:organizationId/policies',
+          name: 'policies',
+          props: true,
+          component: Policies
+        }
+      ]
     },
     {
       path: '/login',
@@ -51,9 +79,9 @@ const router = new Router({
   ]
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.path !== '/login' && !Vue.auth.isAuthenticated()) {
-    return next('/login')
+router.beforeEach(async (to, from, next) => {
+  if (to.matched.some(m => m.meta.requiresAuthentication) && !Vue.auth.isAuthenticated()) {
+    return next({name: 'login'})
   }
 
   next()
