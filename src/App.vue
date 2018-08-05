@@ -2,8 +2,10 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link> | 
-      <router-link v-if="auth.isAuthenticated()" to="/logout">Logout</router-link>
+      <router-link to="/organizations">Organizations</router-link> | 
+      <router-link to="/users">Users</router-link> | 
+      <router-link to="/policies">Policies</router-link> | 
+      <router-link v-if="$auth.isAuthenticated()" to="/logout">Logout</router-link>
       <router-link v-else to="/login">Login</router-link>
     </div>
     <router-view/>
@@ -12,10 +14,7 @@
 
 <script>
 export default {
-  name: 'app',
-  props: {
-    auth: {required: true}
-  }
+  name: 'app'
 }
 </script>
 
@@ -34,6 +33,10 @@ export default {
 #nav a {
   font-weight: bold;
   color: #2c3e50;
+}
+
+#nav a.router-link-active {
+  color: #85e9bc;
 }
 
 #nav a.router-link-exact-active {

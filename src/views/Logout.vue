@@ -5,9 +5,8 @@
 <script>
 export default {
   name: 'logout',
-  props: ['auth'],
-  mounted () {
-    this.auth.logout()
+  mounted() {
+    this.$auth.logout()
     this.$router.push('/')
   }
 }
