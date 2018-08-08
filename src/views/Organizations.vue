@@ -1,11 +1,21 @@
 <template>
   <div class="organizations">
-    <div id="title"><h1>Organizations manager</h1></div>
-    <div id="nav">
-      <router-link to="/organizations/select">Organizations</router-link> | 
-      <router-link to="/organizations/create">Create</router-link>
-    </div>
-    <router-view />
+    <md-app>
+      <md-app-toolbar class="md-primary md-large md-dense">
+        <div class="md-toolbar-row">
+          <span class="md-title">Udaru Organization Manager</span>
+        </div>
+        <div class="md-toolbar-row">
+          <md-tabs md-sync-route class="md-primary">
+            <md-tab to="/organizations/select" md-icon="storage" md-label="Organizations"></md-tab> 
+            <md-tab to="/organizations/create" md-icon="add_box" md-label="Create"></md-tab>
+          </md-tabs>
+        </div>
+      </md-app-toolbar>
+      <md-app-content>
+        <router-view />
+      </md-app-content>
+    </md-app>
   </div>
 </template>
 

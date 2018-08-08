@@ -1,15 +1,49 @@
 <template>
-  <div class="organizations">
-    <form @submit.prevent="createOrganization">
-      <input autofocus v-model="id" placeholder="Organization id">
-      <input v-model="name" placeholder="Organization name">
-      <input v-model="description" placeholder="Organization description">
-      <textarea v-model="metadata" placeholder="{ ... }"></textarea>
-      <input v-model="userId" placeholder="User id">  
-      <input v-model="userName" placeholder="User name">  
-      <button>Create</button>
-    </form>
-  </div>
+  <form @submit.prevent="createOrganization" autocomplete="off">
+    <div class="md-layout md-alignment-center-center">
+      <div class="md-layout-item md-size-50">
+        <div>
+          <md-field>
+            <label for="id">Orgnanization id</label>
+            <md-input id="id" autofocus v-model="id" />
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label for="name">Organization name</label>
+            <md-input id="name" v-model="name" />
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label for="description">Organization description</label>
+            <md-input id="description" v-model="description" />
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label for="metadata">Metadata</label>
+            <md-textarea id="metadata" v-model="metadata" />
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label for="userId">Organization administrator id</label>
+            <md-input id="userId" v-model="userId" />
+          </md-field>
+        </div>
+        <div>
+          <md-field>
+            <label for="userName">Organization administrator name</label>
+            <md-input id="userName" v-model="userName" />
+          </md-field>
+        </div>
+        <div class="md-layout md-alignment-center-center">
+          <md-button type="submit" class="md-primary md-raised">Create</md-button>
+        </div>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -20,7 +54,7 @@ export default {
       id: null,
       name: null,
       description: null,
-      metadata: JSON.stringify({}),
+      metadata: JSON.stringify({}, null, 2),
       userId: null,
       userName: null,
 
@@ -45,6 +79,8 @@ export default {
               }
             : undefined
       })
+
+      this.$router.push({name: 'select-organization'})
     }
   }
 }
