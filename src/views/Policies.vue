@@ -1,14 +1,55 @@
 <template>
   <div class="policies">
-    <ul v-if="policies">
-      <li v-for="policy in policies.data" v-bind:key="policy.id">
-        <pre>{{JSON.stringify(policy, null, 2)}}</pre>
-      </li>
-    </ul>
+    <md-table v-if="ready" v-model="searched">
+      <md-table-toolbar>
+        <div class="md-toolbar-section-start">
+        </div>
+        <div class="md-toolbar-section-end">
+          <md-field md-clearable>
+            <md-input placeholder="Search by name..." v-model="search" @input="searchOnTable" />
+          </md-field>
+        </div>
+      </md-table-toolbar>
+
+      <md-table-empty-state
+        md-label="No policies found"
+        :md-description="`No policy found for this '${search}' query. Try a different search term or create a new policy.`">
+      </md-table-empty-state>
+
+      <md-table-row slot="md-table-row" slot-scope="{item}">
+        <md-table-cell md-label="ID">{{item.id}}</md-table-cell>
+        <md-table-cell md-label="Version">{{item.version}}</md-table-cell>
+        <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
+        <md-table-cell md-label="Statements">
+          <textarea readonly :value="item.statements | json"></textarea>
+          <md-tooltip md-direction="top">{{item.statements | json}}</md-tooltip>
+        </md-table-cell>
+        <md-table-cell>
+          <md-button class="md-icon-button md-dense md-primary">
+            <md-icon>delete</md-icon>
+          </md-button>
+        </md-table-cell>
+      </md-table-row>
+    </md-table>
+    <div class="md-layout md-alignment-center-center">
+      <md-button class="md-primary md-raised" @click="newPolicy">
+        Create new policy
+      </md-button>
+    </div>
   </div>
 </template>
 
 <script>
+const toLower = text => text.toString().toLowerCase()
+
+const searchByName = (items, term) => {
+  if (term) {
+    return items.filter(item => toLower(item.name).includes(toLower(term)))
+  }
+
+  return items
+}
+
 export default {
   name: 'policies',
   props: {
@@ -16,11 +57,25 @@ export default {
   },
   data() {
     return {
-      policies: null
+      ready: false,
+      search: null,
+      searched: null,
+      policies: []
+    }
+  },
+  methods: {
+    newPolicy() {},
+    async searchOnTable() {
+      this.searched = searchByName(this.policies, this.search)
+    },
+    async loadPolicies() {
+      this.policies = (await this.$udaru.getPolicies(this.organizationId)).data
+      this.searched = this.policies
     }
   },
   async created() {
-    this.policies = await this.$udaru.getPolicies(this.organizationId)
+    await this.loadPolicies()
+    this.ready = true
   }
 }
 </script>

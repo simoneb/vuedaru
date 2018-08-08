@@ -1,18 +1,22 @@
 <template>
   <div class="organizations">
     <md-app>
-      <md-app-toolbar class="md-primary md-large md-dense">
+      <md-app-toolbar class=" md-dense">
         <div class="md-toolbar-row">
-          <span class="md-title">Udaru Organization Manager</span>
+        <span class="md-title">Organizations</span>
+        <div class="md-toolbar-section-end"> 
+          <md-button class="md-primary" v-if="$auth.isAuthenticated()" to="/logout">Logout</md-button>          
         </div>
-        <div class="md-toolbar-row">
-          <md-tabs md-sync-route class="md-primary">
-            <md-tab to="/organizations/select" md-icon="storage" md-label="Organizations"></md-tab> 
-            <md-tab to="/organizations/create" md-icon="add_box" md-label="Create"></md-tab>
-          </md-tabs>
+        </div>
+        <div class="md-layout md-toolbar-row md-alignment-center-center">
+        <md-tabs class="md-transparent">
+          <md-tab to="/organizations/select" md-icon="storage"></md-tab> 
+          <md-tab to="/organizations/create" md-icon="add_box"></md-tab>
+        </md-tabs>
         </div>
       </md-app-toolbar>
       <md-app-content>
+        
         <router-view />
       </md-app-content>
     </md-app>

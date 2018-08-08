@@ -6,6 +6,7 @@ import OrganizationCreate from './views/OrganizationCreate'
 import Organization from './views/Organization'
 import Organizations from './views/Organizations'
 import Teams from './views/Teams'
+import User from './views/User'
 import Users from './views/Users'
 import Policies from './views/Policies'
 import Login from './views/Login'
@@ -63,6 +64,12 @@ const router = new Router({
           name: 'policies',
           props: true,
           component: Policies
+        },
+        {
+          path: 'organizations/:organizationId/users/:userId',
+          name: 'user',
+          props: true,
+          component: User
         }
       ]
     },

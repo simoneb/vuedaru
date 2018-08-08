@@ -37,6 +37,12 @@ export default function plugin(Vue) {
       const {data} = await Vue.axios.get('/authorization/teams', {headers: {org: organizationId}})
       return data
     },
+    async getUser(organizationId, userId) {
+      const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(userId)}`, {
+        headers: {org: organizationId}
+      })
+      return data
+    },
     async getCurrentUser() {
       const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(Vue.auth.getUserId())}`)
       return data
