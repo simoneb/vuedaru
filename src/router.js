@@ -9,6 +9,7 @@ import Teams from './views/Teams'
 import User from './views/User'
 import Users from './views/Users'
 import Policies from './views/Policies'
+import Policy from './views/Policy'
 import Login from './views/Login'
 import Logout from './views/Logout'
 
@@ -70,6 +71,12 @@ const router = new Router({
           name: 'user',
           props: true,
           component: User
+        },
+        {
+          path: 'organizations/:organizationId/policies/:policyId',
+          name: 'policy',
+          props: true,
+          component: Policy
         }
       ]
     },

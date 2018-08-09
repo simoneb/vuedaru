@@ -15,13 +15,14 @@
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{item}">
-        <md-table-cell md-label="ID">{{item.id}}</md-table-cell>
+        <md-table-cell md-label="ID">
+          <router-link :to="{name: 'user', params: {organizationId, userId: item.id}}">
+            {{item.id}}
+          </router-link>
+        </md-table-cell>
         <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
         <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
-        <md-table-cell>
-          <md-button class="md-icon-button md-dense md-primary" :to="{name: 'user', params: {organizationId, userId: item.id}}">
-            <md-icon>details</md-icon>
-          </md-button>
+        <md-table-cell md-label="Actions">
           <md-button class="md-icon-button md-dense md-primary">
             <md-icon>delete</md-icon>
           </md-button>

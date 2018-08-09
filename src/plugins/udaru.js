@@ -50,6 +50,12 @@ export default function plugin(Vue) {
     async getPolicies(organizationId) {
       const {data} = await Vue.axios.get('/authorization/policies', {headers: {org: organizationId}})
       return data
+    },
+    async getPolicy(organizationId, policyId) {
+      const {data} = await Vue.axios.get(`/authorization/policies/${encodeURIComponent(policyId)}`, {
+        headers: {org: organizationId}
+      })
+      return data
     }
   }
 }

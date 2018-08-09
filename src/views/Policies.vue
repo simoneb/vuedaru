@@ -17,14 +17,18 @@
       </md-table-empty-state>
 
       <md-table-row slot="md-table-row" slot-scope="{item}">
-        <md-table-cell md-label="ID">{{item.id}}</md-table-cell>
+        <md-table-cell md-label="ID">
+          <router-link :to="{name: 'policy', params: {organizationId, policyId: item.id}}">
+            {{item.id}}
+          </router-link>
+        </md-table-cell>
         <md-table-cell md-label="Version">{{item.version}}</md-table-cell>
         <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
         <md-table-cell md-label="Statements">
           <textarea readonly :value="item.statements | json"></textarea>
           <md-tooltip md-direction="top">{{item.statements | json}}</md-tooltip>
         </md-table-cell>
-        <md-table-cell>
+        <md-table-cell md-label="Actions">
           <md-button class="md-icon-button md-dense md-primary">
             <md-icon>delete</md-icon>
           </md-button>
