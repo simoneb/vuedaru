@@ -5,8 +5,11 @@ import OrganizationSelect from './views/OrganizationSelect'
 import OrganizationCreate from './views/OrganizationCreate'
 import Organization from './views/Organization'
 import Organizations from './views/Organizations'
+import Team from './views/Team'
+import TeamCreate from './views/TeamCreate'
 import Teams from './views/Teams'
 import User from './views/User'
+import UserCreate from './views/UserCreate'
 import Users from './views/Users'
 import Policies from './views/Policies'
 import Policy from './views/Policy'
@@ -67,10 +70,28 @@ const router = new Router({
           component: Policies
         },
         {
+          path: 'organizations/:organizationId/users/create',
+          name: 'user-create',
+          props: true,
+          component: UserCreate
+        },
+        {
+          path: 'organizations/:organizationId/teams/create',
+          name: 'team-create',
+          props: true,
+          component: TeamCreate
+        },
+        {
           path: 'organizations/:organizationId/users/:userId',
           name: 'user',
           props: true,
           component: User
+        },
+        {
+          path: 'organizations/:organizationId/teams/:teamId',
+          name: 'team',
+          props: true,
+          component: Team
         },
         {
           path: 'organizations/:organizationId/policies/:policyId',

@@ -29,6 +29,14 @@ export default function plugin(Vue) {
       const {data} = await Vue.axios.post(`/authorization/organizations`, organization)
       return data
     },
+    async createUser(organizationId, user) {
+      const {data} = await Vue.axios.post(`/authorization/users`, user, {headers: {org: organizationId}})
+      return data
+    },
+    async createTeam(organizationId, team) {
+      const {data} = await Vue.axios.post(`/authorization/teams`, team, {headers: {org: organizationId}})
+      return data
+    },
     async getUsers(organizationId) {
       const {data} = await Vue.axios.get('/authorization/users', {headers: {org: organizationId}})
       return data
@@ -39,6 +47,12 @@ export default function plugin(Vue) {
     },
     async getUser(organizationId, userId) {
       const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(userId)}`, {
+        headers: {org: organizationId}
+      })
+      return data
+    },
+    async getTeam(organizationId, teamId) {
+      const {data} = await Vue.axios.get(`/authorization/teams/${encodeURIComponent(teamId)}`, {
         headers: {org: organizationId}
       })
       return data

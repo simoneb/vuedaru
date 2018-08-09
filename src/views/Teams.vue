@@ -30,7 +30,7 @@
       </md-table-row>
     </md-table>
     <div class="md-layout md-alignment-center-center">
-      <md-button class="md-primary md-raised" @click="newTeam">
+      <md-button class="md-primary md-raised" :to="{name: 'team-create', params: {organizationId}}">
         Create new team
       </md-button>
     </div>
@@ -62,7 +62,6 @@ export default {
     }
   },
   methods: {
-    newTeam() {},
     async searchOnTable() {
       this.searched = searchByName(this.teams, this.search)
     },

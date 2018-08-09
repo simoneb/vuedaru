@@ -1,31 +1,31 @@
 <template>
-  <div class="user" v-if="ready">
+  <div class="team" v-if="ready">
     <div class="md-layout">
       <div class="md-layout-item">
         <span class="md-body-2">ID: </span>
-        <span class="md-body-1">{{user.id}}</span>
+        <span class="md-body-1">{{team.id}}</span>
       </div>
       <div class="md-layout-item">
         <span class="md-body-2">Name: </span>
-        <span class="md-body-1">{{user.name}}</span>
+        <span class="md-body-1">{{team.name}}</span>
       </div>
       <div class="md-layout-item">
         <span class="md-body-2">OrganizationID: </span>
-        <span class="md-body-1">{{user.organizationId}}</span>
+        <span class="md-body-1">{{team.organizationId}}</span>
       </div>
       <div class="md-layout-item">
         <span class="md-body-2">Teams: </span>
-        <span class="md-body-1">{{user.teams}}</span>
+        <span class="md-body-1">{{team.teams}}</span>
       </div>
     </div>
-    <md-table v-model="user.policies">
+    <md-table v-model="team.policies">
       <md-table-toolbar>
         <span class="md-title">Policies</span>
       </md-table-toolbar>
 
       <md-table-empty-state 
         md-label="No policies"
-        md-description="The user doesn't have any associated policies">
+        md-description="The team doesn't have any associated policies">
         <md-button class="md-accent md-raised">Add new policy</md-button>
       </md-table-empty-state>
       
@@ -51,24 +51,24 @@
 
 <script>
 export default {
-  name: 'user',
+  name: 'team',
   props: {
     organizationId: String,
-    userId: String
+    teamId: String
   },
   data() {
     return {
       ready: false,
-      user: null
+      team: null
     }
   },
   methods: {
-    async loadUser() {
-      this.user = await this.$udaru.getUser(this.organizationId, this.userId)
+    async loadTeam() {
+      this.team = await this.$udaru.getTeam(this.organizationId, this.teamId)
     }
   },
   async created() {
-    await this.loadUser()
+    await this.loadTeam()
     this.ready = true
   }
 }

@@ -48,7 +48,7 @@
 
 <script>
 export default {
-  name: 'organizations',
+  name: 'organization-create',
   data() {
     return {
       id: null,
@@ -56,13 +56,8 @@ export default {
       description: null,
       metadata: JSON.stringify({}, null, 2),
       userId: null,
-      userName: null,
-
-      organizations: null
+      userName: null
     }
-  },
-  async created() {
-    this.organizations = await this.$udaru.getOrganizations()
   },
   methods: {
     async createOrganization() {
