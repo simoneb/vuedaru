@@ -1,23 +1,23 @@
 <template>
   <div class="user" v-if="ready">
-    <md-list>
-      <md-list-item>
-        <span class="md-body-2">ID</span>
+    <div class="md-layout">
+      <div class="md-layout-item">
+        <span class="md-body-2">ID: </span>
         <span class="md-body-1">{{user.id}}</span>
-      </md-list-item>
-      <md-list-item>
-        <span class="md-body-2">Name</span>
+      </div>
+      <div class="md-layout-item">
+        <span class="md-body-2">Name: </span>
         <span class="md-body-1">{{user.name}}</span>
-      </md-list-item>
-      <md-list-item>
-        <span class="md-body-2">OrganizationID</span>
+      </div>
+      <div class="md-layout-item">
+        <span class="md-body-2">OrganizationID: </span>
         <span class="md-body-1">{{user.organizationId}}</span>
-      </md-list-item>
-      <md-list-item>
-        <span class="md-body-2">Teams</span>
-        <pre class="md-body-1">{{user.teams}}</pre>
-      </md-list-item>
-    </md-list>
+      </div>
+      <div class="md-layout-item">
+        <span class="md-body-2">Teams: </span>
+        <span class="md-body-1">{{user.teams}}</span>
+      </div>
+    </div>
     <md-table v-model="user.policies">
       <md-table-toolbar>
         <span class="md-title">Policies</span>

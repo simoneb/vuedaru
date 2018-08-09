@@ -6,3 +6,9 @@
 ));
 
 @import "~vue-material/dist/theme/all";
+
+html, body, .md-app, .md-app-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}

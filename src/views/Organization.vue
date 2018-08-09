@@ -1,5 +1,5 @@
 <template>
-  <div class="organization">
+  <div class="organization" v-if="ready">
     <md-list>
       <md-list-item>
         <span class="md-body-2">ID</span>
@@ -25,18 +25,27 @@
 export default {
   name: 'organization',
   props: {
-    organizationId: {
-      type: String,
-      required: true
-    }
+    organizationId: String
   },
   data() {
     return {
-      organization: null
+      organization: null,
+      ready: false
+    }
+  },
+  methods: {
+    async loadOrganization() {
+      this.organization = await this.$udaru.getOrganization(this.organizationId)
+    }
+  },
+  watch: {
+    $route() {
+      this.loadOrganization()
     }
   },
   async created() {
-    this.organization = await this.$udaru.getOrganization(this.organizationId)
+    await this.loadOrganization()
+    this.ready = true
   }
 }
 </script>

@@ -3,8 +3,6 @@
     <md-table v-if="ready" v-model="searched">
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
-        </div>
-        <div class="md-toolbar-section-end">
           <md-field md-clearable>
             <md-input placeholder="Search by name..." v-model="search" @input="searchOnTable" />
           </md-field>
@@ -83,3 +81,12 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.policies {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+</style>

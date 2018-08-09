@@ -78,6 +78,13 @@ export default {
 }
 </script>
 <style scoped>
+.users {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: space-between;
+}
+
 .md-field {
   max-width: 200px;
 }
