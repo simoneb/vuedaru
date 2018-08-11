@@ -6,6 +6,7 @@ import router from './router'
 import Auth from './plugins/auth'
 import Axios from './plugins/axios'
 import Udaru from './plugins/udaru'
+import store from './store'
 
 import 'vue-material/dist/vue-material.min.css'
 import './styles.scss'
@@ -22,5 +23,6 @@ Vue.filter('json', value => JSON.stringify(value, null, 2))
 
 new Vue({
   router,
+  store,
   render: h => h(App)
 }).$mount('#app')

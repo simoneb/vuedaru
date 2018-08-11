@@ -14,7 +14,7 @@
       md-confirm-text="Ok" />
     <div class="md-layout-item md-size-60">
     <md-list v-if="organizations">
-      <template v-for="org in organizations.data">
+      <template v-for="org in organizations">
         <md-list-item :key="org.id + 'item'" :to="'/organizations/' + org.id">
         <span class="md-list-item-text">{{org.name}}</span>
         <md-button @click.prevent="deleteOrganization(org)" class="md-icon-button md-list-action md-dense">
@@ -29,22 +29,26 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+import {mapActions} from '../state/utils'
+import {loadOrganizations} from '../state/actions'
+
 export default {
   name: 'organizations',
   data() {
     return {
       deleteError: null,
-      organizationToDelete: null,
-      organizations: null
+      organizationToDelete: null
     }
   },
   created() {
-    this.load()
+    this.loadOrganizations()
+  },
+  computed: {
+    ...mapState(['organizations'])
   },
   methods: {
-    async load() {
-      this.organizations = await this.$udaru.getOrganizations()
-    },
+    ...mapActions([loadOrganizations]),
     deleteOrganization(org) {
       this.organizationToDelete = org
     },
@@ -60,7 +64,7 @@ export default {
       await this.$udaru.deleteOrganization(this.organizationToDelete.id)
       this.organizationToDelete = null
 
-      this.load()
+      this.loadOrganizations()
     },
     onCancel() {
       this.organizationToDelete = null

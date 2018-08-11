@@ -1,51 +1,53 @@
 <template>
-  <div class="organization" v-if="ready">
+  <div class="organization" v-if="currentOrganization">
     <md-list>
       <md-list-item>
         <span class="md-body-2">ID</span>
-        <span class="md-body-1">{{organization.id}}</span>
+        <span class="md-body-1">{{currentOrganization.id}}</span>
       </md-list-item>
       <md-list-item>
         <span class="md-body-2">Name</span>
-        <span class="md-body-1">{{organization.name}}</span>
+        <span class="md-body-1">{{currentOrganization.name}}</span>
       </md-list-item>
       <md-list-item>
         <span class="md-body-2">Description</span>
-        <span class="md-body-1">{{organization.description}}</span>
+        <span class="md-body-1">{{currentOrganization.description}}</span>
       </md-list-item>
       <md-list-item>
         <span class="md-body-2">Policies</span>
-        <pre class="md-body-1">{{organization.policies}}</pre>
+        <pre class="md-body-1">{{currentOrganization.policies}}</pre>
       </md-list-item>
     </md-list>
   </div>
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
+import {mapActions} from '../state/utils'
+import {loadOrganization} from '../state/actions'
+
 export default {
   name: 'organization',
   props: {
     organizationId: String
   },
-  data() {
-    return {
-      organization: null,
-      ready: false
+  computed: {
+    ...mapGetters(['organization']),
+    currentOrganization() {
+      return this.organization(this.organizationId)
     }
   },
   methods: {
-    async loadOrganization() {
-      this.organization = await this.$udaru.getOrganization(this.organizationId)
-    }
+    ...mapActions(loadOrganization)
   },
   watch: {
     $route() {
-      this.loadOrganization()
+      this.loadOrganization(this.organizationId)
     }
   },
   async created() {
-    await this.loadOrganization()
-    this.ready = true
+    await this.loadOrganization(this.organizationId)
   }
 }
 </script>

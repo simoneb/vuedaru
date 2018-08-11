@@ -1,6 +1,6 @@
 <template>
   <div class="users">
-    <md-table v-if="ready" v-model="searched">
+    <md-table v-if="searched" v-model="searched">
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <md-field md-clearable>
@@ -38,6 +38,9 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+import {mapActions} from '../state/utils'
+import {loadUsers} from '../state/actions'
 const toLower = text => text.toString().toLowerCase()
 
 const searchByName = (items, term) => {
@@ -53,26 +56,26 @@ export default {
   props: {
     organizationId: String
   },
+  computed: {
+    ...mapGetters(['users']),
+    searched() {
+      return this.searchResults || this.users(this.organizationId)
+    }
+  },
   data() {
     return {
-      ready: false,
       search: null,
-      searched: null,
-      users: []
+      searchResults: null
     }
   },
   methods: {
-    async searchOnTable() {
-      this.searched = searchByName(this.users, this.search)
-    },
-    async loadUsers() {
-      this.users = (await this.$udaru.getUsers(this.organizationId)).data
-      this.searched = this.users
+    ...mapActions([loadUsers]),
+    searchOnTable() {
+      this.searchResults = searchByName(this.users(this.organizationId), this.search)
     }
   },
-  async created() {
-    await this.loadUsers()
-    this.ready = true
+  async mounted() {
+    await this.loadUsers(this.organizationId)
   }
 }
 </script>
