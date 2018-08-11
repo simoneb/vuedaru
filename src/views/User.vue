@@ -46,15 +46,21 @@
         </md-table-cell>
       </md-table-row>
     </md-table>
+    <test-user-access :organizationId="organizationId" :userId="userId"></test-user-access>
   </div>
 </template>
 
 <script>
+import TestUserAccess from '../components/TestUserAccess'
+
 export default {
   name: 'user',
   props: {
     organizationId: String,
     userId: String
+  },
+  components: {
+    TestUserAccess
   },
   data() {
     return {

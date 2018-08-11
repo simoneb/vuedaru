@@ -51,6 +51,33 @@ export default function plugin(Vue) {
       })
       return data
     },
+    async canAccess(organizationId, userId, action, resource) {
+      const {data} = await Vue.axios.get(
+        `/authorization/access/${encodeURIComponent(userId)}/${encodeURIComponent(action)}/${encodeURIComponent(
+          resource
+        )}`,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
+    async listUserActionsOnResources(organizationId, userId, resources) {
+      const {data} = await Vue.axios.get(`/authorization/list/${encodeURIComponent(userId)}`, {
+        headers: {org: organizationId},
+        params: {resources}
+      })
+      return data
+    },
+    async listUserActionsOnResource(organizationId, userId, resource) {
+      const {data} = await Vue.axios.get(
+        `/authorization/list/${encodeURIComponent(userId)}/${encodeURIComponent(resource)}`,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
     async getTeam(organizationId, teamId) {
       const {data} = await Vue.axios.get(`/authorization/teams/${encodeURIComponent(teamId)}`, {
         headers: {org: organizationId}
