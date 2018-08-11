@@ -33,9 +33,9 @@ export default {
     organizationId: String
   },
   computed: {
-    ...mapGetters(['organization']),
+    ...mapGetters(['getOrganization']),
     currentOrganization() {
-      return this.organization(this.organizationId)
+      return this.getOrganization(this.organizationId)
     }
   },
   methods: {

@@ -18,18 +18,24 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
+import {mapActions} from '../state/utils'
+import {loadOrganizations} from '../state/actions'
+
 export default {
   name: 'organization-selector',
-  data() {
-    return {
-      organizations: []
-    }
-  },
   props: {
     organizationId: String
   },
+  computed: {
+    ...mapState(['organizations'])
+  },
+  methods: {
+    ...mapActions([loadOrganizations])
+  },
   async created() {
-    this.organizations = (await this.$udaru.getOrganizations()).data
+    this.loadOrganizations()
   }
 }
 </script>

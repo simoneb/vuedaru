@@ -1,6 +1,6 @@
 <template>
   <div class="policies">
-    <md-table v-if="ready" v-model="searched">
+    <md-table v-if="searched" v-model="searched">
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <md-field md-clearable>
@@ -34,7 +34,7 @@
       </md-table-row>
     </md-table>
     <div class="md-layout md-alignment-center-center">
-      <md-button class="md-primary md-raised" @click="newPolicy">
+      <md-button class="md-primary md-raised" :to="{name: 'policy-create', params: {organizationId}}">
         Create new policy
       </md-button>
     </div>
@@ -42,6 +42,10 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+import {mapActions} from '../state/utils'
+import {loadPolicies} from '../state/actions'
+
 const toLower = text => text.toString().toLowerCase()
 
 const searchByName = (items, term) => {
@@ -57,27 +61,26 @@ export default {
   props: {
     organizationId: String
   },
+  computed: {
+    ...mapGetters(['getPolicies']),
+    searched() {
+      return this.searchResults || this.getPolicies(this.organizationId)
+    }
+  },
   data() {
     return {
-      ready: false,
       search: null,
-      searched: null,
-      policies: []
+      searchResults: null
     }
   },
   methods: {
-    newPolicy() {},
-    async searchOnTable() {
-      this.searched = searchByName(this.policies, this.search)
-    },
-    async loadPolicies() {
-      this.policies = (await this.$udaru.getPolicies(this.organizationId)).data
-      this.searched = this.policies
+    ...mapActions([loadPolicies]),
+    searchOnTable() {
+      this.searchResults = searchByName(this.getPolicies(this.organizationId), this.search)
     }
   },
-  async created() {
-    await this.loadPolicies()
-    this.ready = true
+  async mounted() {
+    await this.loadPolicies(this.organizationId)
   }
 }
 </script>

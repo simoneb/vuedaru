@@ -97,6 +97,25 @@ export default function plugin(Vue) {
         headers: {org: organizationId}
       })
       return data
+    },
+    async addUsersToTeam(organizationId, teamId, ...userIds) {
+      const {data} = await Vue.axios.put(
+        `/authorization/teams/${encodeURIComponent(teamId)}/users`,
+        {users: userIds},
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
+    async removeUserFromTeam(organizationId, teamId, userId) {
+      const {data} = await Vue.axios.delete(
+        `/authorization/teams/${encodeURIComponent(teamId)}/users/${encodeURIComponent(userId)}`,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="teams">
-    <md-table v-if="ready" v-model="searched">
+    <md-table v-if="searched" v-model="searched">
       <md-table-toolbar>
         <div class="md-toolbar-section-start">
           <md-field md-clearable>
@@ -22,6 +22,7 @@
         </md-table-cell>
         <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
         <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
+        <md-table-cell md-label="# Users">{{item.usersCount}}</md-table-cell>
         <md-table-cell md-label="Actions">
           <md-button class="md-icon-button md-dense md-primary">
             <md-icon>delete</md-icon>
@@ -38,6 +39,11 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
+import {loadTeams} from '../state/actions'
+import {mapActions} from '../state/utils'
+
 const toLower = text => text.toString().toLowerCase()
 
 const searchByName = (items, term) => {
@@ -53,26 +59,26 @@ export default {
   props: {
     organizationId: String
   },
+  computed: {
+    ...mapGetters(['getTeams']),
+    searched() {
+      return this.searchResults || this.getTeams(this.organizationId)
+    }
+  },
   data() {
     return {
-      ready: false,
       search: null,
-      searched: null,
-      teams: []
+      searchResults: null
     }
   },
   methods: {
-    async searchOnTable() {
-      this.searched = searchByName(this.teams, this.search)
-    },
-    async loadTeams() {
-      this.teams = (await this.$udaru.getTeams(this.organizationId)).data
-      this.searched = this.teams
+    ...mapActions([loadTeams]),
+    searchOnTable() {
+      this.searchResults = searchByName(this.trams(this.organizationId), this.search)
     }
   },
   async created() {
-    await this.loadTeams()
-    this.ready = true
+    await this.loadTeams(this.organizationId)
   }
 }
 </script>

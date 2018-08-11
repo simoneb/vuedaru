@@ -41,6 +41,7 @@
 import {mapGetters} from 'vuex'
 import {mapActions} from '../state/utils'
 import {loadUsers} from '../state/actions'
+
 const toLower = text => text.toString().toLowerCase()
 
 const searchByName = (items, term) => {
@@ -57,9 +58,9 @@ export default {
     organizationId: String
   },
   computed: {
-    ...mapGetters(['users']),
+    ...mapGetters(['getUsers']),
     searched() {
-      return this.searchResults || this.users(this.organizationId)
+      return this.searchResults || this.getUsers(this.organizationId)
     }
   },
   data() {
@@ -71,7 +72,7 @@ export default {
   methods: {
     ...mapActions([loadUsers]),
     searchOnTable() {
-      this.searchResults = searchByName(this.users(this.organizationId), this.search)
+      this.searchResults = searchByName(this.getUsers(this.organizationId), this.search)
     }
   },
   async mounted() {

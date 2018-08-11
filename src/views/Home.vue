@@ -6,6 +6,7 @@
         <span class="md-title">Organization</span>
       </div>
       <div class="md-toolbar-section-end">
+        <md-progress-spinner v-show="loading" class="md-accent" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
         <md-button v-if="$auth.isAuthenticated()" to="/logout">Logout</md-button>          
       </div>
     </md-app-toolbar>
@@ -39,6 +40,8 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 import OrganizationSelector from '../components/OrganizationSelector'
 
 export default {
@@ -46,6 +49,7 @@ export default {
   props: {
     organizationId: String
   },
+  computed: mapState(['loading']),
   components: {
     OrganizationSelector
   }
