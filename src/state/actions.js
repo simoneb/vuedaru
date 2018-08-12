@@ -9,7 +9,8 @@ import {
   setUsers,
   setTeam,
   setTeams,
-  setPolicies
+  setPolicies,
+  setPolicy
 } from './mutations'
 import {createAction} from './utils'
 
@@ -71,6 +72,11 @@ export const loadTeam = createLoadingAction('loadTeam', async function({commit},
 export const loadPolicies = createLoadingAction('loadPolicies', async function({commit}, organizationId) {
   const {data: policies} = await Vue.udaru.getPolicies(organizationId)
   commit(setPolicies({organizationId, policies}))
+})
+
+export const loadPolicy = createLoadingAction('loadPolicy', async function({commit}, {organizationId, policyId}) {
+  const policy = await Vue.udaru.getPolicy(organizationId, policyId)
+  commit(setPolicy({organizationId, policyId, policy}))
 })
 
 export const addUserToTeam = createLoadingAction('addUserToTeam', async function(

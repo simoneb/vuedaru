@@ -1,14 +1,19 @@
 <template>
-<md-field>
-  <label for="team-selector">Select team</label>
-  <md-select md-dense @md-selected="value => $emit('selected', value)">
+<md-field class="team-select-field">
+  <md-select 
+    :disabled="!anyTeams" 
+    md-dense 
+    @md-selected="value => $emit('selected', value)" 
+    :placeholder="anyTeams ? 'Select a team' : 'No available teams'"
+    :value="selectedTeamId">
     <md-option v-for="team in teams" :key="team.id" :value="team.id">{{team.name}}</md-option>
   </md-select>
-  </md-field>
+</md-field>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
+import {differenceBy} from 'lodash/fp'
 
 import {mapActions} from '../state/utils'
 import {loadTeams} from '../state/actions'
@@ -16,12 +21,17 @@ import {loadTeams} from '../state/actions'
 export default {
   name: 'team-select',
   props: {
-    organizationId: String
+    organizationId: String,
+    exclude: Array,
+    selectedTeamId: String
   },
   computed: {
     ...mapGetters(['getTeams']),
     teams() {
-      return this.getTeams(this.organizationId)
+      return differenceBy('id', this.getTeams(this.organizationId))(this.exclude)
+    },
+    anyTeams() {
+      return !!this.teams.length
     }
   },
   methods: {
@@ -32,3 +42,8 @@ export default {
   }
 }
 </script>
+<style lang="scss">
+.md-field.team-select-field {
+  width: auto;
+}
+</style>

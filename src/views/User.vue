@@ -1,79 +1,56 @@
 <template>
-  <div class="user" v-if="user">
-    <div class="md-layout">
-      <div class="md-layout-item">
+  <div v-if="user">
+    <div class="section">
+      <md-toolbar md-elevation="0">
+        <span class="md-title">User</span>
+      </md-toolbar>
+      <md-content>
+        <md-list>
+      <md-list-item>
         <span class="md-body-2">ID: </span>
         <span class="md-body-1">{{user.id}}</span>
-      </div>
-      <div class="md-layout-item">
+      </md-list-item>
+      <md-list-item>
         <span class="md-body-2">Name: </span>
         <span class="md-body-1">{{user.name}}</span>
-      </div>
-      <div class="md-layout-item">
+      </md-list-item>
+      <md-list-item>
         <span class="md-body-2">OrganizationID: </span>
         <span class="md-body-1">{{user.organizationId}}</span>
-      </div>
+      </md-list-item>
+        </md-list>
+      </md-content>
     </div>
-    <md-content>
-      <md-card>
-        <md-table v-model="user.teams">
-          <md-table-toolbar>
-            <span class="md-title">Teams</span>
-          </md-table-toolbar>
-
-          <md-table-empty-state 
-            md-label="No teams"
-            md-description="The user doesn't belong to any teams">
-            <team-select @selected="teamId => selectedTeamId = teamId" :organizationId="organizationId"></team-select>
-            <md-button class="md-accent md-raised" @click="addToTeam(selectedTeamId)">Add user</md-button>
-          </md-table-empty-state>
-          
-          <md-table-row slot="md-table-row" slot-scope="{item}">
-            <md-table-cell md-label="ID">
-              <router-link :to="{name: 'team', params: {organizationId, teamId: item.id}}">
-              {{item.id}}
-              </router-link>
-            </md-table-cell>
-            <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-            <md-table-cell md-label="Actions">
-              <md-button class="md-icon-button md-primary" @click="removeFromTeam(item.id)">
-                <md-icon>delete</md-icon>
-              </md-button>
-            </md-table-cell>
-          </md-table-row>
-        </md-table>
-      </md-card>
-      <md-card>
-        <md-table v-model="user.policies">
-          <md-table-toolbar>
-            <span class="md-title">Policies</span>
-          </md-table-toolbar>
-
-          <md-table-empty-state 
-            md-label="No policies"
-            md-description="The user doesn't have any associated policies">
-            <md-button class="md-accent md-raised">Add new policy</md-button>
-          </md-table-empty-state>
-          
-          <md-table-row slot="md-table-row" slot-scope="{item}">
-            <md-table-cell md-label="ID">
-              <router-link :to="{name: 'policy', params: {organizationId, policyId: item.id}}">
-              {{item.id}}
-              </router-link>
-            </md-table-cell>
-            <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-            <md-table-cell md-label="Version">{{item.version}}</md-table-cell>
-            <md-table-cell md-label="Variables"><pre>{{item.variables}}</pre></md-table-cell>
-            <md-table-cell md-label="Instance">{{item.instance}}</md-table-cell>
-            <md-table-cell md-label="Actions">
-              <md-button class="md-icon-button md-primary">
-                <md-icon>delete</md-icon>
-              </md-button>
-            </md-table-cell>
-          </md-table-row>
-        </md-table>
-      </md-card>
-    </md-content>
+    <div class="section">
+      <md-toolbar md-elevation="0">
+        <span class="md-title" style="flex: 1">Teams</span>
+        <div class="md-toolbar-section-end">
+          <team-select :selectedTeamId="selectedTeamId" @selected="teamId => selectedTeamId = teamId" :exclude="user.teams" :organizationId="organizationId"></team-select>
+          <md-button class="md-accent" :disabled="!selectedTeamId" @click="addToTeam(selectedTeamId)">Add to team</md-button>
+        </div>
+      </md-toolbar>
+      <md-table v-model="user.teams">
+        <md-table-empty-state 
+          md-label="No teams"
+          md-description="The user doesn't belong to any teams">
+        </md-table-empty-state>
+        
+        <md-table-row slot="md-table-row" slot-scope="{item}">
+          <md-table-cell md-label="ID">
+            <router-link :to="{name: 'team', params: {organizationId, teamId: item.id}}">
+            {{item.id}}
+            </router-link>
+          </md-table-cell>
+          <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
+          <md-table-cell md-label="Actions">
+            <md-button class="md-icon-button md-primary" @click="removeFromTeam(item.id)">
+              <md-icon>delete</md-icon>
+            </md-button>
+          </md-table-cell>
+        </md-table-row>
+      </md-table>
+    </div>
+    <policy-instances :policies="user.policies" :organizationId="organizationId" />
     <test-user-access :organizationId="organizationId" :userId="userId"></test-user-access>
   </div>
 </template>
@@ -83,6 +60,7 @@ import {mapGetters} from 'vuex'
 
 import {loadUser, addUserToTeam, removeUserFromTeam} from '../state/actions'
 import {mapActions} from '../state/utils'
+import PolicyInstances from '../components/PolicyInstances'
 import TestUserAccess from '../components/TestUserAccess'
 import TeamSelect from '../components/TeamSelect'
 
@@ -93,6 +71,7 @@ export default {
     userId: String
   },
   components: {
+    PolicyInstances,
     TestUserAccess,
     TeamSelect
   },
@@ -115,6 +94,8 @@ export default {
         userId: this.userId,
         teamId
       })
+
+      this.selectedTeamId = null
       this.loadUserData()
     },
     async removeFromTeam(teamId) {
@@ -123,6 +104,8 @@ export default {
         userId: this.userId,
         teamId
       })
+
+      this.selectedTeamId = null
       this.loadUserData()
     },
     loadUserData() {

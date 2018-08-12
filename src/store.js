@@ -8,6 +8,7 @@ import {
   loadUser,
   loadTeams,
   loadPolicies,
+  loadPolicy,
   loadTeam,
   addUserToTeam,
   removeUserFromTeam
@@ -21,7 +22,8 @@ import {
   setUsers,
   setTeams,
   setTeam,
-  setPolicies
+  setPolicies,
+  setPolicy
 } from './state/mutations'
 import {mapMutations} from './state/utils'
 
@@ -30,23 +32,29 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading: 0,
+
     organizations: [],
     organizationsById: {},
+
     usersByOrganizationId: {},
     teamsByOrganizationId: {},
     policiesByOrganizationId: {},
+
     teamsById: {},
-    usersById: {}
+    usersById: {},
+    policiesById: {}
   },
   getters: {
     getOrganization: state => organizationid => state.organizationsById[organizationid],
     getUsers: state => organizationid => state.usersByOrganizationId[organizationid],
     getTeams: state => organizationid => state.teamsByOrganizationId[organizationid],
-    getTeam: state => (organizationid, teamId) =>
-      state.teamsById[organizationid] && state.teamsById[organizationid][teamId],
+    getPolicies: state => organizationid => state.policiesByOrganizationId[organizationid],
     getUser: state => (organizationid, userId) =>
       state.usersById[organizationid] && state.usersById[organizationid][userId],
-    getPolicies: state => organizationid => state.policiesByOrganizationId[organizationid]
+    getTeam: state => (organizationid, teamId) =>
+      state.teamsById[organizationid] && state.teamsById[organizationid][teamId],
+    getPolicy: state => (organizationid, policyId) =>
+      state.policiesById[organizationid] && state.policiesById[organizationid][policyId]
   },
   mutations: mapMutations([
     setOrganizations,
@@ -56,6 +64,7 @@ export default new Vuex.Store({
     setTeams,
     setTeam,
     setPolicies,
+    setPolicy,
     setLoading,
     unsetLoading
   ]),
@@ -68,6 +77,7 @@ export default new Vuex.Store({
     loadTeam,
     addUserToTeam,
     removeUserFromTeam,
-    loadPolicies
+    loadPolicies,
+    loadPolicy
   }
 })

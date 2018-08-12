@@ -1,36 +1,44 @@
 <template>
-  <md-content>
-    <h1 class="md-title">Authorization check</h1>
-    <form @submit.prevent="checkAccess">
-      <md-field>
-        <label for="actions"></label>
-          <md-select 
-            required 
-            id="actions" 
-            v-model="selectedAction" 
-            placeholder="Select an Action">
-            <md-option v-for="action in actions" :key="action" :value="action">{{action}}</md-option>
-        </md-select>
-      </md-field>
-      <md-field>
-        <label for="resources"></label>
-          <md-select 
-            required 
-            id="resources" 
-            v-model="selectedResource" 
-            placeholder="Select a Resource">
-            <md-option v-for="resource in resources" :key="resource" :value="resource">{{resource}}</md-option>
-        </md-select>
-      </md-field>
-      <md-button class="md-primary md-raised" type="submit">Check access</md-button>
-    <md-icon 
-      v-show="access !== null" 
-      :class="{'md-primary': access === true, 'md-accent': access === false}"
-      class="md-size-2x">
-        {{'thumb_' + upOrDown}}
-      </md-icon>
-    </form>
-  </md-content>
+  <div class="section">
+    <md-toolbar md-elevation="0">
+      <div class="md-title">Authorization check</div>
+    </md-toolbar>
+    <md-content>
+      <div class="md-layout md-alignment-center-center">
+        <div class="md-layout-item md-size-50">
+      <form @submit.prevent="checkAccess">
+        <md-field>
+          <label for="actions"></label>
+            <md-select 
+              required 
+              id="actions" 
+              v-model="selectedAction" 
+              placeholder="Select an Action">
+              <md-option v-for="action in actions" :key="action" :value="action">{{action}}</md-option>
+          </md-select>
+        </md-field>
+        <md-field>
+          <label for="resources"></label>
+            <md-select 
+              required 
+              id="resources" 
+              v-model="selectedResource" 
+              placeholder="Select a Resource">
+              <md-option v-for="resource in resources" :key="resource" :value="resource">{{resource}}</md-option>
+          </md-select>
+        </md-field>
+        <md-button class="md-primary md-raised" type="submit">Check access</md-button>
+      <md-icon 
+        v-show="access !== null" 
+        :class="{'md-primary': access === true, 'md-accent': access === false}"
+        class="md-size-2x">
+          {{'thumb_' + upOrDown}}
+        </md-icon>
+      </form>
+        </div>
+        </div>
+    </md-content>
+  </div>
 </template>
 <script>
 import {flow, flatMap, get, reduce, uniq} from 'lodash/fp'

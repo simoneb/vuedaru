@@ -1,6 +1,6 @@
 <template>
   <md-app>
-    <md-app-toolbar>
+    <md-app-toolbar class="md-primary">
       <div class="md-toolbar-section-start">
         <organization-selector :organizationId="organizationId"></organization-selector>
         <span class="md-title">Organization</span>

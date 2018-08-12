@@ -1,8 +1,11 @@
 @import "~vue-material/dist/theme/engine";
 
+$primary: #0D924F;
+$accent: md-get-palette-color(lightgreen, 100);
+
 @include md-register-theme("default", (
-  primary: #0D924F,
-  accent: md-get-palette-color(red, A200)
+  primary: $primary,
+  accent: $accent
 ));
 
 @import "~vue-material/dist/theme/all";
@@ -11,4 +14,16 @@ html, body, .md-app, .md-app-content {
   height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.section {
+  margin-bottom: 1em;
+
+  > .md-toolbar {
+    @extend .md-accent;
+  }
+
+  > .md-content.md-theme-default {
+    border: 1px solid md-theme(accent);
+  }
 }
