@@ -4,7 +4,7 @@
       <div class="md-toolbar-row">
       <span class="md-title">Organizations</span>
       <div class="md-toolbar-section-end"> 
-        <md-button v-if="$auth.isAuthenticated()" to="/logout">Logout</md-button>          
+        <md-button v-if="$settings.isAuthenticated()" to="/logout">Logout</md-button>          
       </div>
       </div>
       <div class="md-layout md-toolbar-row md-alignment-center-center">

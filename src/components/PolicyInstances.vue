@@ -1,13 +1,14 @@
 <template>
 <div class="section">
   <md-toolbar md-elevation="0">
-    <span class="md-title">Policies</span>
+    <span class="md-title" style="flex: 1">Policies</span>
+    <md-button>Assign policy</md-button>
   </md-toolbar>
   <md-table v-model="policies">
     <md-table-empty-state 
       md-label="No policies"
       md-description="No associated policies">
-      <md-button class="md-accent md-raised">Add new policy</md-button>
+      <md-button class="md-primary">Assign policy</md-button>
     </md-table-empty-state>
     
     <md-table-row slot="md-table-row" slot-scope="{item}">

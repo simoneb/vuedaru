@@ -18,6 +18,10 @@
             <span class="md-body-2">Description</span>
             <span class="md-body-1">{{organization.description}}</span>
           </md-list-item>
+           <md-list-item>
+            <span class="md-body-2">Metadata</span>
+            <span class="md-body-1"><pre>{{organization.metadata || '-'}}</pre></span>
+          </md-list-item>
         </md-list>
       </md-content>
     </div>

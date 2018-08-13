@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     async login() {
-      await this.$auth.login(this.userId)
+      await this.$settings.login(this.userId)
       this.$router.push('/')
     }
   }

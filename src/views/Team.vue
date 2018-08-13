@@ -1,38 +1,19 @@
 <template>
   <div class="team" v-if="team">
+    <team-details @submit="updateTeam" :team="team"></team-details>
     <div class="section">
       <md-toolbar md-elevation="0">
-        <span class="md-title">Team</span>
-      </md-toolbar>
-      <md-content>
-        <md-list>
-          <md-list-item>
-            <span class="md-body-2">ID: </span>
-            <span class="md-body-1">{{team.id}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Name: </span>
-            <span class="md-body-1">{{team.name}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">OrganizationID: </span>
-            <span class="md-body-1">{{team.organizationId}}</span>
-          </md-list-item>
-        </md-list>
-      </md-content>
-    </div>
-    <div class="section">
-      <md-toolbar md-elevation="0">
-        <span class="md-title">Users</span>
+        <span class="md-title" style="flex: 1">Users</span>
+          <user-select :selectedUserId="selectedUserId" @selected="userId => selectedUserId = userId" :exclude="team.users" :organizationId="organizationId"></user-select>
+          <md-button :disabled="!selectedUserId" @click="addUser(selectedUserId)">Add user</md-button>
       </md-toolbar>
 
       <md-table v-model="team.users">    
         <md-table-empty-state 
           md-label="No users"
           md-description="The team doesn't have any users">
-          <user-select @selected="userId => selectedUserId = userId" :organizationId="organizationId"></user-select>
-          <md-button class="md-accent md-raised" @click="addUser(selectedUserId)">Add user</md-button>
         </md-table-empty-state>
+
         <md-table-row slot="md-table-row" slot-scope="{item}">
           <md-table-cell md-label="ID">
             <router-link :to="{name: 'user', params: {organizationId, userId: item.id}}">
@@ -43,6 +24,7 @@
           <md-table-cell md-label="Actions">
             <md-button class="md-icon-button md-primary" @click="removeUser(item.id)">
               <md-icon>delete</md-icon>
+              <md-tooltip>Remove user from team</md-tooltip>
             </md-button>
           </md-table-cell>
         </md-table-row>
@@ -59,6 +41,7 @@ import {mapActions} from '../state/utils'
 import {addUserToTeam, loadTeam, removeUserFromTeam} from '../state/actions'
 import PolicyInstances from '../components/PolicyInstances'
 import UserSelect from '../components/UserSelect'
+import TeamDetails from '../components/TeamDetails'
 
 export default {
   name: 'team',
@@ -68,7 +51,8 @@ export default {
   },
   components: {
     PolicyInstances,
-    UserSelect
+    UserSelect,
+    TeamDetails
   },
   data() {
     return {
@@ -83,12 +67,17 @@ export default {
   },
   methods: {
     ...mapActions([loadTeam, addUserToTeam, removeUserFromTeam]),
+    async updateTeam({id, name, description, metadata}) {
+      await this.$udaru.updateTeam(this.organizationId, id, {name, description, metadata})
+      this.loadTeamData()
+    },
     async addUser(userId) {
       await this.addUserToTeam({
         organizationId: this.organizationId,
         teamId: this.teamId,
         userId
       })
+      this.selectedUserId = null
       this.loadTeamData()
     },
     async removeUser(userId) {
@@ -97,6 +86,7 @@ export default {
         teamId: this.teamId,
         userId
       })
+      this.selectedUserId = null
       this.loadTeamData()
     },
     loadTeamData() {

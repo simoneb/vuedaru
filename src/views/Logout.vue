@@ -6,7 +6,7 @@
 export default {
   name: 'logout',
   mounted() {
-    this.$auth.logout()
+    this.$settings.logout()
     this.$router.push('/')
   }
 }

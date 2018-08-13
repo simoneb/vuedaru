@@ -8,7 +8,7 @@
         <md-table-toolbar>
           <div class="md-toolbar-section-end">
             <md-field md-clearable>
-              <md-input placeholder="Search by name..." v-model="search" @input="searchOnTable" />
+              <md-input placeholder="Search teams..." v-model="search" @input="searchOnTable" />
             </md-field>
           </div>
         </md-table-toolbar>
@@ -26,10 +26,11 @@
           </md-table-cell>
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
           <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
-          <md-table-cell md-label="# Users">{{item.usersCount}}</md-table-cell>
+          <md-table-cell md-label="# Users">{{item.usersCount || '-'}}</md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
+              <md-tooltip>Delete team</md-tooltip>
             </md-button>
           </md-table-cell>
         </md-table-row>
@@ -79,7 +80,7 @@ export default {
   methods: {
     ...mapActions([loadTeams]),
     searchOnTable() {
-      this.searchResults = searchByName(this.trams(this.organizationId), this.search)
+      this.searchResults = searchByName(this.getTeams(this.organizationId), this.search)
     }
   },
   async created() {

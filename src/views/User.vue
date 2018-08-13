@@ -6,18 +6,22 @@
       </md-toolbar>
       <md-content>
         <md-list>
-      <md-list-item>
-        <span class="md-body-2">ID: </span>
-        <span class="md-body-1">{{user.id}}</span>
-      </md-list-item>
-      <md-list-item>
-        <span class="md-body-2">Name: </span>
-        <span class="md-body-1">{{user.name}}</span>
-      </md-list-item>
-      <md-list-item>
-        <span class="md-body-2">OrganizationID: </span>
-        <span class="md-body-1">{{user.organizationId}}</span>
-      </md-list-item>
+          <md-list-item>
+            <span class="md-body-2">ID: </span>
+            <span class="md-body-1">{{user.id}}</span>
+          </md-list-item>
+          <md-list-item>
+            <span class="md-body-2">Name: </span>
+            <span class="md-body-1">{{user.name}}</span>
+          </md-list-item>
+          <md-list-item>
+            <span class="md-body-2">OrganizationID: </span>
+            <span class="md-body-1">{{user.organizationId}}</span>
+          </md-list-item>
+          <md-list-item>
+            <span class="md-body-2">Metadata</span>
+            <span class="md-body-1"><pre>{{user.metadata || '-'}}</pre></span>
+          </md-list-item>
         </md-list>
       </md-content>
     </div>
@@ -26,7 +30,7 @@
         <span class="md-title" style="flex: 1">Teams</span>
         <div class="md-toolbar-section-end">
           <team-select :selectedTeamId="selectedTeamId" @selected="teamId => selectedTeamId = teamId" :exclude="user.teams" :organizationId="organizationId"></team-select>
-          <md-button class="md-accent" :disabled="!selectedTeamId" @click="addToTeam(selectedTeamId)">Add to team</md-button>
+          <md-button :disabled="!selectedTeamId" @click="addToTeam(selectedTeamId)">Add to team</md-button>
         </div>
       </md-toolbar>
       <md-table v-model="user.teams">
@@ -45,13 +49,13 @@
           <md-table-cell md-label="Actions">
             <md-button class="md-icon-button md-primary" @click="removeFromTeam(item.id)">
               <md-icon>delete</md-icon>
+              <md-tooltip>Remove from team</md-tooltip>
             </md-button>
           </md-table-cell>
         </md-table-row>
       </md-table>
     </div>
     <policy-instances :policies="user.policies" :organizationId="organizationId" />
-    <test-user-access :organizationId="organizationId" :userId="userId"></test-user-access>
   </div>
 </template>
 
@@ -61,7 +65,6 @@ import {mapGetters} from 'vuex'
 import {loadUser, addUserToTeam, removeUserFromTeam} from '../state/actions'
 import {mapActions} from '../state/utils'
 import PolicyInstances from '../components/PolicyInstances'
-import TestUserAccess from '../components/TestUserAccess'
 import TeamSelect from '../components/TeamSelect'
 
 export default {
@@ -72,7 +75,6 @@ export default {
   },
   components: {
     PolicyInstances,
-    TestUserAccess,
     TeamSelect
   },
   data() {

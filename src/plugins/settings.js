@@ -3,17 +3,16 @@ export default function plugin(Vue) {
 
   plugin.installed = true
 
-  Vue.prototype.$auth = Vue.auth = {
+  Vue.prototype.$settings = Vue.settings = {
     isAuthenticated() {
       return !!localStorage.getItem('auth')
     },
     logout() {
       localStorage.removeItem('auth')
     },
-    async login(auth) {
-      const user = await Vue.udaru.checkUserForLogin(auth)
-      console.log(user)
-      localStorage.setItem('auth', auth)
+    async login(userId) {
+      await Vue.udaru.checkUserForLogin(userId)
+      localStorage.setItem('auth', userId)
     },
     getUserId() {
       return localStorage.getItem('auth')

@@ -20,10 +20,10 @@ html, body, .md-app, .md-app-content {
   margin-bottom: 1em;
 
   > .md-toolbar {
-    @extend .md-accent;
+    @extend .md-primary;
   }
 
   > .md-content.md-theme-default {
-    border: 1px solid md-theme(accent);
+    border: 1px solid md-theme(primary);
   }
 }

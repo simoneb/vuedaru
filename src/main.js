@@ -3,7 +3,7 @@ import VueMaterial from 'vue-material'
 
 import App from './App.vue'
 import router from './router'
-import Auth from './plugins/auth'
+import Auth from './plugins/settings'
 import Axios from './plugins/axios'
 import Udaru from './plugins/udaru'
 import store from './store'

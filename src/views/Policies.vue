@@ -8,7 +8,7 @@
         <md-table-toolbar>
           <div class="md-toolbar-section-end">
             <md-field md-clearable>
-              <md-input placeholder="Search by name..." v-model="search" @input="searchOnTable" />
+              <md-input placeholder="Search policies..." v-model="search" @input="searchOnTable" />
             </md-field>
           </div>
         </md-table-toolbar>
@@ -28,11 +28,11 @@
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
           <md-table-cell md-label="Statements">
             <textarea readonly :value="item.statements | json"></textarea>
-            <md-tooltip md-direction="top">{{item.statements | json}}</md-tooltip>
           </md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
+              <md-tooltip>Delete policy</md-tooltip>
             </md-button>
           </md-table-cell>
         </md-table-row>

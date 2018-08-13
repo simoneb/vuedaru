@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+
 import Home from './views/Home.vue'
 import OrganizationSelect from './views/OrganizationSelect'
 import OrganizationCreate from './views/OrganizationCreate'
@@ -15,6 +16,7 @@ import Policies from './views/Policies'
 import Policy from './views/Policy'
 import Login from './views/Login'
 import Logout from './views/Logout'
+import AuthorizationCheck from './views/AuthorizationCheck'
 
 Vue.use(Router)
 
@@ -23,7 +25,7 @@ const router = new Router({
     {
       path: '/organizations',
       component: Organizations,
-      meta: {requiresAuthentication: true, udaru: {}},
+      meta: {requiresAuthentication: true},
       children: [
         {path: '', redirect: {name: 'select-organization'}},
         {
@@ -46,7 +48,7 @@ const router = new Router({
       children: [
         {path: '', redirect: {name: 'select-organization'}},
         {
-          path: 'organizations/:organizationId',
+          path: 'organizations/:organizationId/details',
           name: 'organization',
           props: true,
           component: Organization
@@ -98,6 +100,12 @@ const router = new Router({
           name: 'policy',
           props: true,
           component: Policy
+        },
+        {
+          path: 'organizations/:organizationId/authorization-check',
+          name: 'authorization-check',
+          props: true,
+          component: AuthorizationCheck
         }
       ]
     },
@@ -115,7 +123,7 @@ const router = new Router({
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.matched.some(m => m.meta.requiresAuthentication) && !Vue.auth.isAuthenticated()) {
+  if (to.matched.some(m => m.meta.requiresAuthentication) && !Vue.settings.isAuthenticated()) {
     return next({name: 'login'})
   }
 
