@@ -84,16 +84,20 @@ export const addUserToTeam = createLoadingAction('addUserToTeam', async function
   context,
   {organizationId, teamId, userId}
 ) {
-  await Vue.udaru.addUsersToTeam(organizationId, teamId, userId)
+  return await Vue.udaru.addUsersToTeam(organizationId, teamId, userId)
 })
 
 export const removeUserFromTeam = createLoadingAction('removeUserFromTeam', async function(
   context,
   {organizationId, teamId, userId}
 ) {
-  await Vue.udaru.removeUserFromTeam(organizationId, teamId, userId)
+  return await Vue.udaru.removeUserFromTeam(organizationId, teamId, userId)
 })
 
 export const changeSnackbarMessage = createAction('changeSnackbarMessage', function({commit}, {message}) {
   commit(setSnackbarMessage({message}))
+})
+
+export const createTeam = createLoadingAction('createTeam', async function(context, {organizationId, team}) {
+  return await Vue.udaru.createTeam(organizationId, team)
 })

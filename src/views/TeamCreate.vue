@@ -1,13 +1,13 @@
 <template>
 <div>
-  <team-details @submit="createTeam"></team-details>
+  <team-details @submit="doCreateTeam"></team-details>
   <snackbar />
 </div>
 </template>
 
 <script>
 import {mapActions} from '../state/utils'
-import {changeSnackbarMessage} from '../state/actions'
+import {changeSnackbarMessage, createTeam} from '../state/actions'
 import TeamDetails from '../components/TeamDetails'
 import Snackbar from '../components/Snackbar'
 
@@ -21,10 +21,10 @@ export default {
     Snackbar
   },
   methods: {
-    ...mapActions(changeSnackbarMessage),
-    async createTeam(team) {
+    ...mapActions(createTeam, changeSnackbarMessage),
+    async doCreateTeam(team) {
       try {
-        await this.$udaru.createTeam(this.organizationId, team)
+        await this.createTeam({organizationId: this.organizationId, team})
         this.changeSnackbarMessage({message: 'Team saved!'})
         this.$router.push({name: 'teams', params: {organizationId: this.organizationId}})
       } catch (err) {
