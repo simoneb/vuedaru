@@ -122,6 +122,9 @@ export default function plugin(Vue) {
         }
       )
       return data
+    },
+    ping() {
+      return Vue.axios.get('/ping')
     }
   }
 }
