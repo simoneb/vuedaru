@@ -15,7 +15,9 @@
     <div class="md-layout-item md-size-60">
     <md-list v-if="organizations">
       <template v-for="org in organizations">
-        <md-list-item :key="org.id + 'item'" :to="'/organizations/' + org.id">
+        <md-list-item 
+          :key="org.id + 'item'" 
+          :to="{name: 'organization', params: {organizationId: org.id}}">
         <span class="md-list-item-text">{{org.name}}</span>
         <md-button @click.prevent="deleteOrganization(org)" class="md-icon-button md-list-action md-dense">
           <md-icon>delete</md-icon>

@@ -48,6 +48,10 @@ const router = new Router({
       children: [
         {path: '', redirect: {name: 'select-organization'}},
         {
+          path: 'organizations/:organizationId',
+          redirect: ({params}) => ({name: 'organization', params})
+        },
+        {
           path: 'organizations/:organizationId/details',
           name: 'organization',
           props: true,
