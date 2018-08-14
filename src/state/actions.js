@@ -10,7 +10,8 @@ import {
   setTeam,
   setTeams,
   setPolicies,
-  setPolicy
+  setPolicy,
+  setSnackbarMessage
 } from './mutations'
 import {createAction} from './utils'
 
@@ -91,4 +92,8 @@ export const removeUserFromTeam = createLoadingAction('removeUserFromTeam', asyn
   {organizationId, teamId, userId}
 ) {
   await Vue.udaru.removeUserFromTeam(organizationId, teamId, userId)
+})
+
+export const changeSnackbarMessage = createAction('changeSnackbarMessage', function({commit}, {message}) {
+  commit(setSnackbarMessage({message}))
 })

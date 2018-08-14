@@ -11,11 +11,13 @@ import {
   loadPolicy,
   loadTeam,
   addUserToTeam,
-  removeUserFromTeam
+  removeUserFromTeam,
+  changeSnackbarMessage
 } from './state/actions'
 import {
   setLoading,
   unsetLoading,
+  setSnackbarMessage,
   setOrganizations,
   setOrganization,
   setUser,
@@ -32,6 +34,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     loading: 0,
+    snackbarMessage: null,
 
     organizations: [],
     organizationsById: {},
@@ -66,7 +69,8 @@ export default new Vuex.Store({
     setPolicies,
     setPolicy,
     setLoading,
-    unsetLoading
+    unsetLoading,
+    setSnackbarMessage
   ]),
   actions: {
     loadOrganizations,
@@ -78,6 +82,7 @@ export default new Vuex.Store({
     addUserToTeam,
     removeUserFromTeam,
     loadPolicies,
-    loadPolicy
+    loadPolicy,
+    changeSnackbarMessage
   }
 })

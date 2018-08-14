@@ -43,3 +43,7 @@ export const unsetLoading = createMutation('unsetLoading', state => {
   // make sure we never go below 0
   state.loading = Math.max(0, state.loading - 1)
 })
+
+export const setSnackbarMessage = createMutation('snackbarMessage', (state, {message}) => {
+  state.snackbarMessage = message
+})
