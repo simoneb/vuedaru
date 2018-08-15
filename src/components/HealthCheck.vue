@@ -17,11 +17,6 @@ export default {
     }
   },
   methods: {
-    throwEven() {
-      this.count++
-
-      if (this.count % 3 === 0) throw new Error()
-    },
     async checkStatus() {
       try {
         await this.$udaru.ping()
@@ -36,6 +31,7 @@ export default {
   },
   created() {
     this.interval = setInterval(() => this.checkStatus(), 5000)
+    this.checkStatus()
   },
   destroyed() {
     clearInterval(this.interval)
@@ -63,7 +59,7 @@ $height: 45px;
     background: green;
     margin-top: 0;
     animation: exit 0.4s forwards;
-    animation-delay: 1s;
+    animation-delay: 2s;
   }
 }
 
