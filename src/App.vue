@@ -1,7 +1,7 @@
 <template>
   <div class="app">
-  <health-check />
-  <router-view/>
+    <health-check />
+    <router-view/>
   </div>
 </template>
 

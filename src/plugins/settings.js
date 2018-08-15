@@ -1,21 +1,26 @@
+const USER_ID = 'user_id'
+const URL = 'udaru_url'
+
 export default function plugin(Vue) {
   if (plugin.installed) return
 
   plugin.installed = true
 
   Vue.prototype.$settings = Vue.settings = {
-    isAuthenticated() {
-      return !!localStorage.getItem('auth')
+    isConfigured() {
+      return !!this.getUserId() && !!this.getUrl()
     },
-    logout() {
-      localStorage.removeItem('auth')
-    },
-    async login(userId) {
-      await Vue.udaru.checkUserForLogin(userId)
-      localStorage.setItem('auth', userId)
+    setUserId(userId) {
+      localStorage.setItem(USER_ID, userId)
     },
     getUserId() {
-      return localStorage.getItem('auth')
+      return localStorage.getItem(USER_ID)
+    },
+    setUrl(url) {
+      localStorage.setItem(URL, url)
+    },
+    getUrl() {
+      return localStorage.getItem(URL)
     }
   }
 }

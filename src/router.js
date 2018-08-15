@@ -14,8 +14,7 @@ import UserCreate from './views/UserCreate'
 import Users from './views/Users'
 import Policies from './views/Policies'
 import Policy from './views/Policy'
-import Login from './views/Login'
-import Logout from './views/Logout'
+import Settings from './views/Settings'
 import AuthorizationCheck from './views/AuthorizationCheck'
 
 Vue.use(Router)
@@ -25,7 +24,7 @@ const router = new Router({
     {
       path: '/organizations',
       component: Organizations,
-      meta: {requiresAuthentication: true},
+      meta: {requiresSettings: true},
       children: [
         {path: '', redirect: {name: 'select-organization'}},
         {
@@ -44,7 +43,7 @@ const router = new Router({
       path: '/',
       component: Home,
       props: true,
-      meta: {requiresAuthentication: true},
+      meta: {requiresSettings: true},
       children: [
         {path: '', redirect: {name: 'select-organization'}},
         {
@@ -114,21 +113,16 @@ const router = new Router({
       ]
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/logout',
-      name: 'logout',
-      component: Logout
+      path: '/settings',
+      name: 'settings',
+      component: Settings
     }
   ]
 })
 
 router.beforeEach(async (to, from, next) => {
-  if (to.matched.some(m => m.meta.requiresAuthentication) && !Vue.settings.isAuthenticated()) {
-    return next({name: 'login'})
+  if (to.matched.some(m => m.meta.requiresSettings) && !Vue.settings.isConfigured()) {
+    return next({name: 'settings'})
   }
 
   next()

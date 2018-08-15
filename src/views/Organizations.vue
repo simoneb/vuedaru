@@ -1,10 +1,13 @@
 <template>
   <md-app>
-    <md-app-toolbar class="md-large md-dense">
+    <md-app-toolbar class="md-large md-dense md-transparent">
       <div class="md-toolbar-row">
-      <span class="md-title">Organizations</span>
+      <div class="md-toolbar-section-start"> 
+        <toolbar-logo />
+        <span class="md-title">Organizations</span>
+      </div>
       <div class="md-toolbar-section-end"> 
-        <md-button v-if="$settings.isAuthenticated()" to="/logout">Logout</md-button>          
+        <md-button class="md-icon-button" :to="{name: 'settings'}"><md-icon>settings</md-icon></md-button>
       </div>
       </div>
       <div class="md-layout md-toolbar-row md-alignment-center-center">
@@ -21,7 +24,12 @@
 </template>
 
 <script>
+import ToolbarLogo from '../components/ToolbarLogo'
+
 export default {
-  name: 'organizations'
+  name: 'organizations',
+  components: {
+    ToolbarLogo
+  }
 }
 </script>

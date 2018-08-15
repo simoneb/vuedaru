@@ -1,9 +1,7 @@
 import Axios from 'axios'
 
 export default function plugin(Vue) {
-  if (plugin.installed) {
-    return
-  }
+  if (plugin.installed) return
 
   plugin.installed = true
 

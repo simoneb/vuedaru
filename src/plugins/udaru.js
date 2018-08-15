@@ -6,13 +6,6 @@ export default function plugin(Vue) {
   plugin.installed = true
 
   Vue.prototype.$udaru = Vue.udaru = {
-    async checkUserForLogin(userId) {
-      const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(userId)}`, {
-        headers: {authorization: userId}
-      })
-
-      return data
-    },
     async getOrganizations() {
       const {data} = await Vue.axios.get('/authorization/organizations')
       return data
@@ -91,7 +84,7 @@ export default function plugin(Vue) {
       return data
     },
     async getCurrentUser() {
-      const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(Vue.auth.getUserId())}`)
+      const {data} = await Vue.axios.get(`/authorization/users/${encodeURIComponent(Vue.settings.getUserId())}`)
       return data
     },
     async getPolicies(organizationId) {

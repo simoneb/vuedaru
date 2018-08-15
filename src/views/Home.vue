@@ -3,11 +3,11 @@
     <md-app-toolbar class="md-transparent">
       <div class="md-toolbar-section-start">
         <organization-selector :organizationId="organizationId"></organization-selector>
-        <img class="logo" src="https://nearform.github.io/udaru/logo.jpg">
+        <toolbar-logo />
       </div>
       <div class="md-toolbar-section-end">
         <md-progress-spinner v-show="loading" class="md-accent" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-        <md-button v-if="$settings.isAuthenticated()" to="/logout">Logout</md-button>          
+        <md-button class="md-icon-button" :to="{name: 'settings'}"><md-icon>settings</md-icon></md-button>
       </div>
     </md-app-toolbar>
     <md-app-drawer md-permanent="clipped">
@@ -50,6 +50,7 @@
 import {mapState} from 'vuex'
 
 import OrganizationSelector from '../components/OrganizationSelector'
+import ToolbarLogo from '../components/ToolbarLogo'
 
 export default {
   name: 'home',
@@ -58,7 +59,8 @@ export default {
   },
   computed: mapState(['loading']),
   components: {
-    OrganizationSelector
+    OrganizationSelector,
+    ToolbarLogo
   }
 }
 </script>
@@ -67,11 +69,5 @@ export default {
 .md-drawer {
   width: 220px;
   max-width: calc(100vw - 125px);
-}
-
-.logo {
-  height: 28px;
-  align-self: flex-start;
-  margin-left: 10px;
 }
 </style>
