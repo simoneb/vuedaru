@@ -1,5 +1,5 @@
 <template>
-<form @submit.prevent="validate" autocomplete="off">
+<form @submit.prevent="validate" novalidate autocomplete="off">
   <div class="section">
     <md-toolbar md-elevation="0">
       <span class="md-title" style="flex: 1">{{creating ? 'Create team' : 'Team'}}</span>

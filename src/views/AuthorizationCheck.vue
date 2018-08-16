@@ -6,7 +6,7 @@
     <md-content>
       <div class="md-layout md-alignment-center-center">
         <div class="md-layout-item md-size-50">
-      <form @submit.prevent="checkAccess">
+      <form @submit.prevent="checkAccess" novalidate autocomplete="off">
         <md-field>
           <label for="actions"></label>
             <md-select 

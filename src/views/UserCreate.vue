@@ -4,7 +4,7 @@
     <span class="md-title">Create user</span>
   </md-toolbar>
   <md-content>
-  <form @submit.prevent="createUser" autocomplete="off">
+  <form @submit.prevent="createUser" novalidate autocomplete="off">
     <div class="md-layout md-alignment-center-center">
       <div class="md-layout-item md-size-50">
         <div>

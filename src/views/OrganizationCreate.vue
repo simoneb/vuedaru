@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="createOrganization" autocomplete="off">
+  <form @submit.prevent="createOrganization" novalidate autocomplete="off">
     <div class="md-layout md-alignment-center-center">
       <div class="md-layout-item md-size-50">
         <div>
