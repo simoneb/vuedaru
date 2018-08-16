@@ -31,7 +31,6 @@
       </md-table>
     </div>
     <policy-instances :policies="team.policies" :organizationId="organizationId" />
-    <snackbar />
   </div>
 </template>
 
@@ -43,7 +42,6 @@ import {addUserToTeam, loadTeam, removeUserFromTeam, changeSnackbarMessage} from
 import PolicyInstances from '../components/PolicyInstances'
 import UserSelect from '../components/UserSelect'
 import TeamDetails from '../components/TeamDetails'
-import Snackbar from '../components/Snackbar'
 
 export default {
   name: 'team',
@@ -54,8 +52,7 @@ export default {
   components: {
     PolicyInstances,
     UserSelect,
-    TeamDetails,
-    Snackbar
+    TeamDetails
   },
   data() {
     return {
@@ -70,9 +67,9 @@ export default {
   },
   methods: {
     ...mapActions([loadTeam, addUserToTeam, removeUserFromTeam, changeSnackbarMessage]),
-    async updateTeam({id, name, description, metadata}) {
+    async updateTeam({name, description, metadata}) {
       try {
-        await this.$udaru.updateTeam(this.organizationId, id, {name, description, metadata})
+        await this.$udaru.updateTeam(this.organizationId, this.teamId, {name, description, metadata})
         this.changeSnackbarMessage({message: 'Team saved!'})
       } catch (err) {
         this.changeSnackbarMessage({message: `Error saving team: "${err}"`})

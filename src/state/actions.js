@@ -98,6 +98,10 @@ export const changeSnackbarMessage = createAction('changeSnackbarMessage', funct
   commit(setSnackbarMessage({message}))
 })
 
-export const createTeam = createLoadingAction('createTeam', async function(context, {organizationId, team}) {
-  return await Vue.udaru.createTeam(organizationId, team)
+export const createTeam = createLoadingAction('createTeam', function(context, {organizationId, team}) {
+  return Vue.udaru.createTeam(organizationId, team)
+})
+
+export const createOrganization = createLoadingAction('createOrganization', function(context, {organization}) {
+  return Vue.udaru.createOrganization(organization)
 })

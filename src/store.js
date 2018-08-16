@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 
 import {
+  createOrganization,
   loadOrganizations,
   loadOrganization,
   loadUsers,
@@ -74,6 +75,7 @@ export default new Vuex.Store({
     setSnackbarMessage
   ]),
   actions: {
+    createOrganization,
     loadOrganizations,
     loadOrganization,
     loadUser,

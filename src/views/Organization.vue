@@ -1,30 +1,6 @@
 <template>
   <div class="organization" v-if="organization">
-    <div class="section">
-      <md-toolbar md-elevation="0">
-        <span class="md-title">Organization</span>
-      </md-toolbar>
-      <md-content>
-        <md-list>
-          <md-list-item>
-            <span class="md-body-2">ID</span>
-            <span class="md-body-1">{{organization.id}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Name</span>
-            <span class="md-body-1">{{organization.name}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Description</span>
-            <span class="md-body-1">{{organization.description}}</span>
-          </md-list-item>
-           <md-list-item>
-            <span class="md-body-2">Metadata</span>
-            <span class="md-body-1"><pre>{{organization.metadata || '-'}}</pre></span>
-          </md-list-item>
-        </md-list>
-      </md-content>
-    </div>
+    <organization-details @submit="updateOrganization" :organization="organization"></organization-details>
     <policy-instances :policies="organization.policies" :organizationId="organizationId" />
   </div>
 </template>
@@ -33,8 +9,9 @@
 import {mapGetters} from 'vuex'
 
 import {mapActions} from '../state/utils'
-import {loadOrganization} from '../state/actions'
+import {loadOrganization, changeSnackbarMessage} from '../state/actions'
 import PolicyInstances from '../components/PolicyInstances'
+import OrganizationDetails from '../components/OrganizationDetails'
 
 export default {
   name: 'organization',
@@ -42,6 +19,7 @@ export default {
     organizationId: String
   },
   components: {
+    OrganizationDetails,
     PolicyInstances
   },
   computed: {
@@ -51,15 +29,27 @@ export default {
     }
   },
   methods: {
-    ...mapActions(loadOrganization)
+    ...mapActions(loadOrganization, changeSnackbarMessage),
+    async updateOrganization({name, description, metadata}) {
+      try {
+        await this.$udaru.updateOrganization(this.organizationId, {name, description, metadata})
+        this.changeSnackbarMessage({message: 'Organization saved!'})
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error saving organization: "${err}"`})
+      }
+      this.loadOrganizationData()
+    },
+    async loadOrganizationData() {
+      await this.loadOrganization(this.organizationId)
+    }
   },
   watch: {
     $route() {
       this.loadOrganization(this.organizationId)
     }
   },
-  async created() {
-    await this.loadOrganization(this.organizationId)
+  created() {
+    this.loadOrganizationData()
   }
 }
 </script>

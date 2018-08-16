@@ -22,6 +22,16 @@ export default function plugin(Vue) {
       const {data} = await Vue.axios.post(`/authorization/organizations`, organization)
       return data
     },
+    async updateOrganization(organizationId, organization) {
+      const {data} = await Vue.axios.put(
+        `/authorization/organizations/${encodeURIComponent(organizationId)}`,
+        organization,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
     async createUser(organizationId, user) {
       const {data} = await Vue.axios.post(`/authorization/users`, user, {headers: {org: organizationId}})
       return data

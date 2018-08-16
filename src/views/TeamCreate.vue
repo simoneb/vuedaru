@@ -1,15 +1,11 @@
 <template>
-<div>
   <team-details @submit="doCreateTeam"></team-details>
-  <snackbar />
-</div>
 </template>
 
 <script>
 import {mapActions} from '../state/utils'
 import {changeSnackbarMessage, createTeam} from '../state/actions'
 import TeamDetails from '../components/TeamDetails'
-import Snackbar from '../components/Snackbar'
 
 export default {
   name: 'team-create',
@@ -17,8 +13,7 @@ export default {
     organizationId: String
   },
   components: {
-    TeamDetails,
-    Snackbar
+    TeamDetails
   },
   methods: {
     ...mapActions(createTeam, changeSnackbarMessage),
