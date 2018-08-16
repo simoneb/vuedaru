@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
+import App from './App.vue'
 import Home from './views/Home.vue'
 import OrganizationSelect from './views/OrganizationSelect'
 import OrganizationCreate from './views/OrganizationCreate'
@@ -22,93 +23,98 @@ Vue.use(Router)
 const router = new Router({
   routes: [
     {
-      path: '/organizations',
-      component: Organizations,
-      meta: {requiresSettings: true},
-      children: [
-        {path: '', redirect: {name: 'select-organization'}},
-        {
-          path: 'select',
-          name: 'select-organization',
-          component: OrganizationSelect
-        },
-        {
-          path: 'create',
-          name: 'create-organization',
-          component: OrganizationCreate
-        }
-      ]
-    },
-    {
       path: '/',
-      component: Home,
-      props: true,
+      component: App,
       meta: {requiresSettings: true},
       children: [
         {path: '', redirect: {name: 'select-organization'}},
         {
-          path: 'organizations/:organizationId',
-          redirect: ({params}) => ({name: 'organization', params})
+          path: 'organizations',
+          component: Organizations,
+          children: [
+            {path: '', redirect: {name: 'select-organization'}},
+            {
+              path: 'select',
+              name: 'select-organization',
+              component: OrganizationSelect
+            },
+            {
+              path: 'create',
+              name: 'create-organization',
+              component: OrganizationCreate
+            }
+          ]
         },
         {
-          path: 'organizations/:organizationId/details',
-          name: 'organization',
+          path: '/organizations/:organizationId',
+          component: Home,
           props: true,
-          component: Organization
-        },
-        {
-          path: 'organizations/:organizationId/users',
-          name: 'users',
-          props: true,
-          component: Users
-        },
-        {
-          path: 'organizations/:organizationId/teams',
-          name: 'teams',
-          props: true,
-          component: Teams
-        },
-        {
-          path: 'organizations/:organizationId/policies',
-          name: 'policies',
-          props: true,
-          component: Policies
-        },
-        {
-          path: 'organizations/:organizationId/users/create',
-          name: 'user-create',
-          props: true,
-          component: UserCreate
-        },
-        {
-          path: 'organizations/:organizationId/teams/create',
-          name: 'team-create',
-          props: true,
-          component: TeamCreate
-        },
-        {
-          path: 'organizations/:organizationId/users/:userId',
-          name: 'user',
-          props: true,
-          component: User
-        },
-        {
-          path: 'organizations/:organizationId/teams/:teamId',
-          name: 'team',
-          props: true,
-          component: Team
-        },
-        {
-          path: 'organizations/:organizationId/policies/:policyId',
-          name: 'policy',
-          props: true,
-          component: Policy
-        },
-        {
-          path: 'organizations/:organizationId/authorization-check',
-          name: 'authorization-check',
-          props: true,
-          component: AuthorizationCheck
+          children: [
+            {
+              path: '',
+              redirect: ({params}) => ({name: 'organization', params})
+            },
+            {
+              path: 'details',
+              name: 'organization',
+              props: true,
+              component: Organization
+            },
+            {
+              path: 'users',
+              name: 'users',
+              props: true,
+              component: Users
+            },
+            {
+              path: 'teams',
+              name: 'teams',
+              props: true,
+              component: Teams
+            },
+            {
+              path: 'policies',
+              name: 'policies',
+              props: true,
+              component: Policies
+            },
+            {
+              path: 'users/create',
+              name: 'user-create',
+              props: true,
+              component: UserCreate
+            },
+            {
+              path: 'teams/create',
+              name: 'team-create',
+              props: true,
+              component: TeamCreate
+            },
+            {
+              path: 'users/:userId',
+              name: 'user',
+              props: true,
+              component: User
+            },
+            {
+              path: 'teams/:teamId',
+              name: 'team',
+              props: true,
+              component: Team
+            },
+            {
+              path: 'policies/:policyId',
+              name: 'policy',
+              props: true,
+              component: Policy
+            },
+            {
+              path: 'authorization-check',
+              name: 'authorization-check',
+              props: true,
+              component: AuthorizationCheck
+            }
+          ]
         }
       ]
     },

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueMaterial from 'vue-material'
 
-import App from './App.vue'
+import Root from './Root.vue'
 import Axios from './plugins/axios'
 import Filters from './plugins/filters'
 import Settings from './plugins/settings'
@@ -26,5 +26,5 @@ Vue.use(VueMaterial)
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  render: h => h(Root)
+}).$mount('#root')
