@@ -60,6 +60,12 @@ export default function plugin(Vue) {
       })
       return data
     },
+    async updateUser(organizationId, userId, user) {
+      const {data} = await Vue.axios.put(`/authorization/users/${encodeURIComponent(userId)}`, user, {
+        headers: {org: organizationId}
+      })
+      return data
+    },
     async canAccess(organizationId, userId, action, resource) {
       const {data} = await Vue.axios.get(
         `/authorization/access/${encodeURIComponent(userId)}/${encodeURIComponent(action)}/${encodeURIComponent(

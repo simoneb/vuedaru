@@ -1,5 +1,5 @@
 <template>
-  <div class="team" v-if="team">
+  <div v-if="team">
     <team-details @submit="updateTeam" :team="team"></team-details>
     <div class="section">
       <md-toolbar md-elevation="0">

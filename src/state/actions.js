@@ -102,6 +102,10 @@ export const createTeam = createLoadingAction('createTeam', function(context, {o
   return Vue.udaru.createTeam(organizationId, team)
 })
 
+export const createUser = createLoadingAction('createUser', function(context, {organizationId, user}) {
+  return Vue.udaru.createUser(organizationId, user)
+})
+
 export const createOrganization = createLoadingAction('createOrganization', function(context, {organization}) {
   return Vue.udaru.createOrganization(organization)
 })

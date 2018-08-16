@@ -1,38 +1,13 @@
 <template>
   <div v-if="user">
-    <div class="section">
-      <md-toolbar md-elevation="0">
-        <span class="md-title">User</span>
-      </md-toolbar>
-      <md-content>
-        <md-list>
-          <md-list-item>
-            <span class="md-body-2">ID: </span>
-            <span class="md-body-1">{{user.id}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Name: </span>
-            <span class="md-body-1">{{user.name}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">OrganizationID: </span>
-            <span class="md-body-1">{{user.organizationId}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Metadata</span>
-            <span class="md-body-1"><pre>{{user.metadata || '-'}}</pre></span>
-          </md-list-item>
-        </md-list>
-      </md-content>
-    </div>
+    <user-details @submit="updateUser" :user="user" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Teams</span>
-        <div class="md-toolbar-section-end">
-          <team-select :selectedTeamId="selectedTeamId" @selected="teamId => selectedTeamId = teamId" :exclude="user.teams" :organizationId="organizationId"></team-select>
-          <md-button :disabled="!selectedTeamId" @click="addToTeam(selectedTeamId)">Add to team</md-button>
-        </div>
+        <team-select :selectedTeamId="selectedTeamId" @selected="teamId => selectedTeamId = teamId" :exclude="user.teams" :organizationId="organizationId"></team-select>
+        <md-button :disabled="!selectedTeamId" @click="addToTeam(selectedTeamId)">Add to team</md-button>
       </md-toolbar>
+
       <md-table v-model="user.teams">
         <md-table-empty-state 
           md-label="No teams"
@@ -62,10 +37,11 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {loadUser, addUserToTeam, removeUserFromTeam} from '../state/actions'
 import {mapActions} from '../state/utils'
+import {loadUser, addUserToTeam, removeUserFromTeam, changeSnackbarMessage} from '../state/actions'
 import PolicyInstances from '../components/PolicyInstances'
 import TeamSelect from '../components/TeamSelect'
+import UserDetails from '../components/UserDetails'
 
 export default {
   name: 'user',
@@ -75,7 +51,8 @@ export default {
   },
   components: {
     PolicyInstances,
-    TeamSelect
+    TeamSelect,
+    UserDetails
   },
   data() {
     return {
@@ -89,7 +66,16 @@ export default {
     }
   },
   methods: {
-    ...mapActions(loadUser, addUserToTeam, removeUserFromTeam),
+    ...mapActions(loadUser, addUserToTeam, removeUserFromTeam, changeSnackbarMessage),
+    async updateUser({name, metadata}) {
+      try {
+        await this.$udaru.updateUser(this.organizationId, this.userId, {name, metadata})
+        this.changeSnackbarMessage({message: 'User saved!'})
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error saving user: "${err}"`})
+      }
+      this.loadUserData()
+    },
     async addToTeam(teamId) {
       await this.addUserToTeam({
         organizationId: this.organizationId,

@@ -1,5 +1,5 @@
 <template>
-  <team-details @submit="doCreateTeam"></team-details>
+  <team-details @submit="doCreateTeam" />
 </template>
 
 <script>
