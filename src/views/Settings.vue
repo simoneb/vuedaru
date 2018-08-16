@@ -53,7 +53,7 @@
                   v-validate="'required'"
                   v-model="userId"
                 />
-                <span class="md-helper-text">Please use a super user account</span>
+                <span class="md-helper-text">The user should be a super admin</span>
                 <span class="md-error">{{errors.first('userId')}}</span>
               </md-field>
               <div class="divider" />
@@ -138,7 +138,7 @@ export default {
         this.urlSuccess = true
         this.activeStep = STEPS.user
       } catch (err) {
-        this.urlError = 'Cannot reach server'
+        this.urlError = err.message || 'Cannot reach server'
         this.urlSuccess = false
       } finally {
         this.checkingUrl = false
@@ -150,15 +150,22 @@ export default {
       try {
         this.checkingUserId = true
         this.$settings.setUserId(this.userId)
-        await Axios.get(`${this.url}/authorization/users/${encodeURIComponent(this.userId)}`, {
+
+        const {
+          data: {access}
+        } = await Axios.get(`${this.url}/authorization/access/${encodeURIComponent(this.userId)}/*/*`, {
           headers: {authorization: this.userId}
         })
+
+        if (!access) {
+          throw new Error('User does not have sufficient privileges')
+        }
 
         this.userIdError = null
         this.userIdSuccess = true
         this.activeStep = STEPS.done
       } catch (err) {
-        this.userIdError = 'Cannot log in with the specified user'
+        this.userIdError = err.message || 'Cannot log in with the specified user'
         this.userIdSuccess = false
       } finally {
         this.checkingUserId = false
