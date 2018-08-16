@@ -5,11 +5,11 @@ export default function plugin(Vue) {
 
   plugin.installed = true
 
-  const axios = Axios.create({
-    baseURL: 'http://localhost:8080'
-  })
+  const axios = Axios.create()
 
   axios.interceptors.request.use(config => {
+    config.baseURL = Vue.settings.getUrl()
+
     if (!config.headers.authorization) {
       config.headers.authorization = Vue.settings.getUserId()
     }
