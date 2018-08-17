@@ -11,7 +11,8 @@ import {
   setTeams,
   setPolicies,
   setPolicy,
-  setSnackbarMessage
+  setSnackbarMessage,
+  setCurrentUser
 } from './mutations'
 import {createAction} from './utils'
 
@@ -108,4 +109,9 @@ export const createUser = createLoadingAction('createUser', function(context, {o
 
 export const createOrganization = createLoadingAction('createOrganization', function(context, {organization}) {
   return Vue.udaru.createOrganization(organization)
+})
+
+export const loadCurrentUser = createLoadingAction('loadCurrentUser', async function({commit}) {
+  const currentUser = await Vue.udaru.getCurrentUser()
+  commit(setCurrentUser({currentUser}))
 })

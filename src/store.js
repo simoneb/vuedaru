@@ -15,7 +15,8 @@ import {
   loadTeam,
   addUserToTeam,
   removeUserFromTeam,
-  changeSnackbarMessage
+  changeSnackbarMessage,
+  loadCurrentUser
 } from './state/actions'
 import {
   setLoading,
@@ -28,7 +29,8 @@ import {
   setTeams,
   setTeam,
   setPolicies,
-  setPolicy
+  setPolicy,
+  setCurrentUser
 } from './state/mutations'
 import {mapMutations} from './state/utils'
 
@@ -38,6 +40,7 @@ export default new Vuex.Store({
   state: {
     loading: 0,
     snackbarMessage: null,
+    currentUser: null,
 
     organizations: [],
     organizationsById: {},
@@ -73,7 +76,8 @@ export default new Vuex.Store({
     setPolicy,
     setLoading,
     unsetLoading,
-    setSnackbarMessage
+    setSnackbarMessage,
+    setCurrentUser
   ]),
   actions: {
     createOrganization,
@@ -89,6 +93,7 @@ export default new Vuex.Store({
     removeUserFromTeam,
     loadPolicies,
     loadPolicy,
-    changeSnackbarMessage
+    changeSnackbarMessage,
+    loadCurrentUser
   }
 })

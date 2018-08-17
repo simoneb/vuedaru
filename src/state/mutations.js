@@ -47,3 +47,7 @@ export const unsetLoading = createMutation('unsetLoading', state => {
 export const setSnackbarMessage = createMutation('snackbarMessage', (state, {message}) => {
   state.snackbarMessage = message
 })
+
+export const setCurrentUser = createMutation('currentUser', (state, {currentUser}) => {
+  state.currentUser = currentUser
+})
