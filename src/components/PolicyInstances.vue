@@ -24,6 +24,7 @@
       <md-table-cell md-label="Actions">
         <md-button class="md-icon-button md-primary">
           <md-icon>delete</md-icon>
+          <md-tooltip>Remove policy association</md-tooltip>
         </md-button>
       </md-table-cell>
     </md-table-row>

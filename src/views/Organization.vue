@@ -1,5 +1,5 @@
 <template>
-  <div class="organization" v-if="organization">
+  <div v-if="organization">
     <organization-details @submit="updateOrganization" :organization="organization"></organization-details>
     <policy-instances :policies="organization.policies" :organizationId="organizationId" />
   </div>
