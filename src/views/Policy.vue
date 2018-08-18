@@ -1,32 +1,17 @@
 <template>
   <div v-if="policy">
-    <div class="section">
-      <md-toolbar md-elevation="0">
-        <span class="md-title" style="flex: 1">Policy</span>
-        <md-button>Save</md-button>
-      </md-toolbar>
-      <md-content>
-        <md-list>
-          <md-list-item>
-            <span class="md-body-2">ID</span>
-            <span class="md-body-1">{{policy.id}}</span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Name</span>
-            <span class="md-body-1"><md-field><input v-model="policy.name"></md-field></span>
-          </md-list-item>
-          <md-list-item>
-            <span class="md-body-2">Version</span>
-            <span class="md-body-1">{{policy.version}}</span>
-          </md-list-item>
-        </md-list>
-        </md-content>
-    </div>
+    <service-key-dialog :operation="serviceKeyOperation" @cancel="onCancel" />
+    <policy-details @submit="doUpdatePolicy" :policy="policy" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title">Statements</span>
       </md-toolbar>
-      <md-table v-model="policy.statements.Statement">
+      <md-table :value="policy.statements.Statement || []">
+         <md-table-empty-state 
+          md-label="No statements"
+          md-description="No policy statements">
+          <md-button class="md-primary">Add statement</md-button>
+        </md-table-empty-state>
         <md-table-row slot="md-table-row" slot-scope="{item}">
           <md-table-cell md-label="Actions">
             <md-chips v-model="item.Action"></md-chips>
@@ -52,9 +37,11 @@
 <script>
 import {mapGetters} from 'vuex'
 
+import PolicyDetails from '../components/PolicyDetails.vue'
 import PolicyInstances from '../components/PolicyInstances.vue'
+import ServiceKeyDialog from '../components/ServiceKeyDialog.vue'
 import {mapActions} from '../state/utils.js'
-import {loadPolicy} from '../state/actions.js'
+import {loadPolicy, changeSnackbarMessage} from '../state/actions.js'
 
 export default {
   name: 'policy',
@@ -63,7 +50,14 @@ export default {
     policyId: String
   },
   components: {
-    PolicyInstances
+    PolicyDetails,
+    PolicyInstances,
+    ServiceKeyDialog
+  },
+  data() {
+    return {
+      serviceKeyOperation: null
+    }
   },
   computed: {
     ...mapGetters(['getPolicy']),
@@ -72,10 +66,30 @@ export default {
     }
   },
   methods: {
-    ...mapActions(loadPolicy)
+    ...mapActions(loadPolicy, changeSnackbarMessage),
+    doUpdatePolicy(policy) {
+      this.serviceKeyOperation = serviceKey => this.onConfirm(policy, serviceKey)
+    },
+    async onConfirm({id, ...policy}, serviceKey) {
+      try {
+        await this.$udaru.updatePolicy(this.organizationId, id, policy, serviceKey)
+        this.changeSnackbarMessage({message: 'Policy saved'})
+        this.loadPolicyData()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error saving policy: ${err}`})
+      } finally {
+        this.serviceKeyOperation = null
+      }
+    },
+    onCancel() {
+      this.serviceKeyOperation = null
+    },
+    loadPolicyData() {
+      return this.loadPolicy({organizationId: this.organizationId, policyId: this.policyId})
+    }
   },
-  async created() {
-    await this.loadPolicy({organizationId: this.organizationId, policyId: this.policyId})
+  created() {
+    this.loadPolicyData()
   }
 }
 </script>

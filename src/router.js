@@ -15,6 +15,7 @@ import UserCreate from './views/UserCreate'
 import Users from './views/Users'
 import Policies from './views/Policies'
 import Policy from './views/Policy'
+import PolicyCreate from './views/PolicyCreate'
 import Settings from './views/Settings'
 import AuthorizationCheck from './views/AuthorizationCheck'
 
@@ -91,19 +92,25 @@ const router = new Router({
               component: TeamCreate
             },
             {
-              path: 'users/:userId',
+              path: 'user/:userId',
               name: 'user',
               props: true,
               component: User
             },
             {
-              path: 'teams/:teamId',
+              path: 'team/:teamId',
               name: 'team',
               props: true,
               component: Team
             },
             {
-              path: 'policies/:policyId',
+              path: 'policies/create',
+              name: 'policy-create',
+              props: true,
+              component: PolicyCreate
+            },
+            {
+              path: 'policy/:policyId',
               name: 'policy',
               props: true,
               component: Policy

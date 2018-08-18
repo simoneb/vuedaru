@@ -1,14 +1,6 @@
 <template>
   <div class="policies">
-    <md-dialog-prompt
-      v-if="idToDelete"
-      :md-active="!!idToDelete"
-      v-model="serviceKey"
-      md-title="Confirm delete"
-      :md-content="'Deleting policy ' + idToDelete + ' requires a service key, please type it below to proceed'"
-      md-input-placeholder="Service key"
-      @md-cancel="onCancel"
-      @md-confirm="onConfirm" />
+    <service-key-dialog :operation="serviceKeyOperation" @cancel="onCancel" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <div class="md-title">Policies</div>
@@ -60,6 +52,7 @@ import {mapGetters} from 'vuex'
 
 import {loadPolicies, changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
+import ServiceKeyDialog from '../components/ServiceKeyDialog'
 
 const toLower = text => text.toString().toLowerCase()
 
@@ -76,6 +69,9 @@ export default {
   props: {
     organizationId: String
   },
+  components: {
+    ServiceKeyDialog
+  },
   computed: {
     ...mapGetters(['getPolicies']),
     searched() {
@@ -84,8 +80,7 @@ export default {
   },
   data() {
     return {
-      idToDelete: null,
-      serviceKey: null,
+      serviceKeyOperation: null,
 
       search: null,
       searchResults: null
@@ -97,20 +92,21 @@ export default {
       this.searchResults = searchByName(this.getPolicies(this.organizationId), this.search)
     },
     deletePolicy(idToDelete) {
-      this.idToDelete = idToDelete
+      this.serviceKeyOperation = serviceKey => this.onConfirm(idToDelete, serviceKey)
     },
-    async onConfirm() {
+    async onConfirm(idToDelete, serviceKey) {
       try {
-        await this.$udaru.deletePolicy(this.idToDelete, this.serviceKey)
-        this.idToDelete = null
+        await this.$udaru.deletePolicy(this.organizationId, idToDelete, serviceKey)
         this.changeSnackbarMessage({message: 'Policy deleted'})
         this.loadPoliciesData()
       } catch (err) {
         this.changeSnackbarMessage({message: `Error deleting policy: ${err}`})
+      } finally {
+        this.serviceKeyOperation = null
       }
     },
     onCancel() {
-      this.idToDelete = null
+      this.serviceKeyOperation = null
     },
     loadPoliciesData() {
       this.loadPolicies(this.organizationId)

@@ -116,6 +116,13 @@ export const createUser = createLoadingAction('createUser', function(context, {o
   return Vue.udaru.createUser(organizationId, user)
 })
 
+export const createPolicy = createLoadingAction('createPolicy', function(
+  context,
+  {organizationId, policy, serviceKey}
+) {
+  return Vue.udaru.createPolicy(organizationId, policy, serviceKey)
+})
+
 export const createOrganization = createLoadingAction('createOrganization', function(context, {organization}) {
   return Vue.udaru.createOrganization(organization)
 })
