@@ -43,7 +43,7 @@ import {changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
 
 export default {
-  name: 'policy-instances',
+  name: 'policy-associations',
   props: {
     policies: {
       type: Array,

@@ -1,7 +1,7 @@
 <template>
   <div v-if="organization">
     <organization-details @submit="updateOrganization" :organization="organization"></organization-details>
-    <policy-instances 
+    <policy-associations 
       :policies="organization.policies" 
       :organizationId="organizationId" 
       :deleteAssociation="removePolicyInstance"
@@ -14,7 +14,7 @@ import {mapGetters} from 'vuex'
 
 import {mapActions} from '../state/utils'
 import {loadOrganization, changeSnackbarMessage} from '../state/actions'
-import PolicyInstances from '../components/PolicyInstances'
+import PolicyAssociations from '../components/PolicyAssociations'
 import OrganizationDetails from '../components/OrganizationDetails'
 
 export default {
@@ -24,7 +24,7 @@ export default {
   },
   components: {
     OrganizationDetails,
-    PolicyInstances
+    PolicyAssociations
   },
   computed: {
     ...mapGetters(['getOrganization']),

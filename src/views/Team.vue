@@ -30,7 +30,7 @@
         </md-table-row>
       </md-table>
     </div>
-    <policy-instances 
+    <policy-associations 
       :policies="team.policies" 
       :organizationId="organizationId"
       :deleteAssociation="removePolicyInstance"
@@ -43,7 +43,7 @@ import {mapGetters} from 'vuex'
 
 import {mapActions} from '../state/utils'
 import {addUserToTeam, loadTeam, removeUserFromTeam, changeSnackbarMessage} from '../state/actions'
-import PolicyInstances from '../components/PolicyInstances'
+import PolicyAssociations from '../components/PolicyAssociations'
 import UserSelect from '../components/UserSelect'
 import TeamDetails from '../components/TeamDetails'
 
@@ -54,7 +54,7 @@ export default {
     teamId: String
   },
   components: {
-    PolicyInstances,
+    PolicyAssociations,
     UserSelect,
     TeamDetails
   },

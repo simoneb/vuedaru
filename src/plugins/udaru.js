@@ -173,6 +173,12 @@ export default function plugin(Vue) {
       )
       return data
     },
+    async loadPolicyInstances(organizationId, policyId) {
+      const {data} = await Vue.axios.get(`/authorization/policies/${encodeURIComponent(policyId)}/instances`, {
+        headers: {org: organizationId}
+      })
+      return data
+    },
     ping() {
       return Vue.axios.get('/ping')
     }
