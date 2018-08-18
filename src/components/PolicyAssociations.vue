@@ -25,9 +25,9 @@
         </router-link>
       </md-table-cell>
       <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-      <md-table-cell md-label="Version">{{item.version}}</md-table-cell>
       <md-table-cell md-label="Variables"><pre>{{item.variables}}</pre></md-table-cell>
-      <md-table-cell md-label="Instance">{{item.instance}}</md-table-cell>
+      <md-table-cell md-label="Version" md-numeric>{{item.version}}</md-table-cell>
+      <md-table-cell md-label="Instance" md-numeric>{{item.instance}}</md-table-cell>
       <md-table-cell md-label="Actions">
         <md-button class="md-icon-button md-primary" @click="removePolicyInstance(item.id)">
           <md-icon>delete</md-icon>

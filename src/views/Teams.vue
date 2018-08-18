@@ -33,7 +33,7 @@
           </md-table-cell>
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
           <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
-          <md-table-cell md-label="# Users">{{item.usersCount || '-'}}</md-table-cell>
+          <md-table-cell md-label="# Users" md-numeric>{{item.usersCount || '-'}}</md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button @click="deleteTeam(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>

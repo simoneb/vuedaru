@@ -12,7 +12,8 @@ import {
   setPolicies,
   setPolicy,
   setSnackbarMessage,
-  setCurrentUser
+  setCurrentUser,
+  setPolicyInstances
 } from './mutations'
 import {createAction} from './utils'
 
@@ -74,6 +75,14 @@ export const loadTeam = createLoadingAction('loadTeam', async function({commit},
 export const loadPolicies = createLoadingAction('loadPolicies', async function({commit}, organizationId) {
   const {data: policies} = await Vue.udaru.getPolicies(organizationId)
   commit(setPolicies({organizationId, policies}))
+})
+
+export const loadPolicyInstances = createLoadingAction('loadPolicyInstances', async function(
+  {commit},
+  {organizationId, policyId}
+) {
+  const policyInstances = await Vue.udaru.loadPolicyInstances(organizationId, policyId)
+  commit(setPolicyInstances({organizationId, policyId, policyInstances}))
 })
 
 export const loadPolicy = createLoadingAction('loadPolicy', async function({commit}, {organizationId, policyId}) {

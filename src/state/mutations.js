@@ -31,6 +31,16 @@ export const setPolicy = createMutation('policy', (state, {organizationId, polic
   }
 })
 
+export const setPolicyInstances = createMutation(
+  'policyInstances',
+  (state, {organizationId, policyId, policyInstances}) => {
+    state.policyInstancesById = {
+      ...state.policyInstancesById,
+      [organizationId]: {...state.policyInstancesById[organizationId], [policyId]: policyInstances}
+    }
+  }
+)
+
 export const setPolicies = createMutation('policies', (state, {organizationId, policies}) => {
   state.policiesByOrganizationId = {...state.policiesByOrganizationId, [organizationId]: policies}
 })

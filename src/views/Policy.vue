@@ -1,5 +1,5 @@
 <template>
-  <div class="policy" v-if="policy">
+  <div v-if="policy">
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Policy</span>
@@ -45,12 +45,14 @@
         </md-table-row>
       </md-table>
     </div>
+    <policy-instances :organization-id="organizationId" :policy-id="policyId" />
   </div>
 </template>
 
 <script>
 import {mapGetters} from 'vuex'
 
+import PolicyInstances from '../components/PolicyInstances.vue'
 import {mapActions} from '../state/utils.js'
 import {loadPolicy} from '../state/actions.js'
 
@@ -59,6 +61,9 @@ export default {
   props: {
     organizationId: String,
     policyId: String
+  },
+  components: {
+    PolicyInstances
   },
   computed: {
     ...mapGetters(['getPolicy']),

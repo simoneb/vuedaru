@@ -33,8 +33,8 @@
               {{item.id}}
             </router-link>
           </md-table-cell>
-          <md-table-cell md-label="Version">{{item.version}}</md-table-cell>
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
+          <md-table-cell md-label="Version" md-numeric>{{item.version}}</md-table-cell>
           <md-table-cell md-label="Statements">
             <textarea readonly :value="item.statements | json"></textarea>
           </md-table-cell>

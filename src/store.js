@@ -12,6 +12,7 @@ import {
   loadTeams,
   loadPolicies,
   loadPolicy,
+  loadPolicyInstances,
   loadTeam,
   addUserToTeam,
   removeUserFromTeam,
@@ -30,7 +31,8 @@ import {
   setTeam,
   setPolicies,
   setPolicy,
-  setCurrentUser
+  setCurrentUser,
+  setPolicyInstances
 } from './state/mutations'
 import {mapMutations} from './state/utils'
 
@@ -51,7 +53,9 @@ export default new Vuex.Store({
 
     teamsById: {},
     usersById: {},
-    policiesById: {}
+    policiesById: {},
+
+    policyInstancesById: {}
   },
   getters: {
     getOrganization: state => organizationid => state.organizationsById[organizationid],
@@ -63,7 +67,9 @@ export default new Vuex.Store({
     getTeam: state => (organizationid, teamId) =>
       state.teamsById[organizationid] && state.teamsById[organizationid][teamId],
     getPolicy: state => (organizationid, policyId) =>
-      state.policiesById[organizationid] && state.policiesById[organizationid][policyId]
+      state.policiesById[organizationid] && state.policiesById[organizationid][policyId],
+    getPolicyInstances: state => (organizationid, policyId) =>
+      state.policyInstancesById[organizationid] && state.policyInstancesById[organizationid][policyId]
   },
   mutations: mapMutations([
     setOrganizations,
@@ -74,6 +80,7 @@ export default new Vuex.Store({
     setTeam,
     setPolicies,
     setPolicy,
+    setPolicyInstances,
     setLoading,
     unsetLoading,
     setSnackbarMessage,
@@ -93,6 +100,7 @@ export default new Vuex.Store({
     removeUserFromTeam,
     loadPolicies,
     loadPolicy,
+    loadPolicyInstances,
     changeSnackbarMessage,
     loadCurrentUser
   }
