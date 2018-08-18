@@ -1,11 +1,11 @@
 @import "~vue-material/dist/theme/engine";
 
 $primary: #0D924F;
-$accent: md-get-palette-color(lightgreen, 100);
+// $accent: md-get-palette-color(lightgreen, 100);
 
 @include md-register-theme("default", (
   primary: $primary,
-  accent: $accent
+  // accent: $accent
 ));
 
 @import "~vue-material/dist/theme/all";

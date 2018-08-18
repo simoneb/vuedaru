@@ -179,6 +179,16 @@ export default function plugin(Vue) {
       )
       return data
     },
+    async addOrUpdateTeamPolicy(organizationId, teamId, policy) {
+      const {data} = await Vue.axios.put(
+        `/authorization/teams/${encodeURIComponent(teamId)}/policies`,
+        {policies: [policy]},
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
     async removeOrganizationPolicy(organizationId, policyId) {
       const {data} = await Vue.axios.delete(
         `/authorization/organizations/${encodeURIComponent(organizationId)}/policies/${encodeURIComponent(policyId)}`,

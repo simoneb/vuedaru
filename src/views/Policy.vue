@@ -5,6 +5,7 @@
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Statements</span>
+        <md-button @click="addStatement">Add statement</md-button>
         <md-button @click="doUpdatePolicy(policy)" type="submit">Save</md-button>
       </md-toolbar>
       <md-table v-if="!!policy.statements.Statement" v-model="policy.statements.Statement">

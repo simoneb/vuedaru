@@ -9,7 +9,10 @@
       @md-confirm="onConfirm" />
     <div class="section">
       <md-toolbar md-elevation="0">
-        <span class="md-title">Teams</span>
+        <span class="md-title" style="flex: 1">Teams</span>
+        <md-button :to="{name: 'team-create', params: {organizationId}}">
+          Create new team
+        </md-button>
       </md-toolbar>
       <md-table v-if="searched" v-model="searched">
         <md-table-toolbar>
@@ -42,11 +45,6 @@
           </md-table-cell>
         </md-table-row>
       </md-table>
-    </div>
-    <div class="md-layout md-alignment-center-center">
-      <md-button class="md-primary md-raised" :to="{name: 'team-create', params: {organizationId}}">
-        Create new team
-      </md-button>
     </div>
   </div>
 </template>

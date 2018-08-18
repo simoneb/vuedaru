@@ -5,17 +5,31 @@
       :md-active="!!idToDelete"
       md-title="Confirm remove"
       :md-content="'Remove policy association ' + idToDelete + '?'"
-      @md-cancel="onCancel"
-      @md-confirm="onConfirm" />
+      @md-cancel="cancelRemove"
+      @md-confirm="confirmRemove" 
+  />
+
+  <md-dialog :md-active.sync="addingAssociation">
+    <md-dialog-title>Add policy</md-dialog-title>
+    <md-dialog-content>
+      <policy-select :organizationId="organizationId" @selected="policy => selectedPolicy = policy" />
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button @click="addingAssociation = false">Cancel</md-button>
+      <md-button class="md-raised md-primary" @click="confirmAdd">Ok</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+  
   <md-toolbar md-elevation="0">
     <span class="md-title" style="flex: 1">Policies</span>
-    <md-button>Assign policy</md-button>
+    <md-button @click="addingAssociation = true">Assign policy</md-button>
   </md-toolbar>
   <md-table v-model="policies">
+
     <md-table-empty-state 
       md-label="No policies"
       md-description="No associated policies">
-      <md-button class="md-primary">Assign policy</md-button>
+      <md-button class="md-primary" @click="addingAssociation = true">Assign policy</md-button>
     </md-table-empty-state>
     
     <md-table-row slot="md-table-row" slot-scope="{item}">
@@ -41,6 +55,7 @@
 <script>
 import {changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
+import PolicySelect from '../components/PolicySelect'
 
 export default {
   name: 'policy-associations',
@@ -56,11 +71,20 @@ export default {
     deleteAssociation: {
       type: Function,
       required: true
+    },
+    addAssociation: {
+      type: Function,
+      required: true
     }
+  },
+  components: {
+    PolicySelect
   },
   data() {
     return {
-      idToDelete: null
+      addingAssociation: false,
+      idToDelete: null,
+      selectedPolicy: null
     }
   },
   methods: {
@@ -68,7 +92,7 @@ export default {
     removePolicyInstance(instanceId) {
       this.idToDelete = instanceId
     },
-    async onConfirm() {
+    async confirmRemove() {
       try {
         await this.deleteAssociation(this.idToDelete)
         this.idToDelete = null
@@ -77,8 +101,18 @@ export default {
         this.changeSnackbarMessage({message: `Error removing policy association: ${err}`})
       }
     },
-    onCancel() {
+    cancelRemove() {
       this.idToDelete = null
+    },
+    async confirmAdd() {
+      try {
+        await this.addAssociation(this.selectedPolicy)
+        this.addingAssociation = null
+        this.selectedPolicy = null
+        this.changeSnackbarMessage({message: 'Policy association addedd successfully'})
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error adding policy association: ${err}`})
+      }
     }
   }
 }

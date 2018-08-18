@@ -7,9 +7,13 @@
       :md-content="'Delete user ' + idToDelete + '?'"
       @md-cancel="onCancel"
       @md-confirm="onConfirm" />
+
     <div class="section">
       <md-toolbar md-elevation="0">
-        <div class="md-title">Users</div>
+        <div class="md-title" style="flex: 1">Users</div>
+        <md-button :to="{name: 'user-create', params: {organizationId}}">
+          Create new user
+        </md-button>
       </md-toolbar>        
       <md-table v-if="searched" v-model="searched">
         <md-table-toolbar>
@@ -41,11 +45,6 @@
           </md-table-cell>
         </md-table-row>
       </md-table>
-    </div>
-    <div class="md-layout md-alignment-center-center">
-      <md-button class="md-primary md-raised" :to="{name: 'user-create', params: {organizationId}}">
-        Create new user
-      </md-button>
     </div>
   </div>
 </template>

@@ -3,7 +3,10 @@
     <service-key-dialog :operation="serviceKeyOperation" @cancel="onCancel" />
     <div class="section">
       <md-toolbar md-elevation="0">
-        <div class="md-title">Policies</div>
+        <div class="md-title" style="flex: 1">Policies</div>
+        <md-button :to="{name: 'policy-create', params: {organizationId}}">
+          Create new policy
+        </md-button>
       </md-toolbar>
       <md-table v-if="searched" v-model="searched">
         <md-table-toolbar>
@@ -38,11 +41,6 @@
           </md-table-cell>
         </md-table-row>
       </md-table>
-    </div>
-    <div class="md-layout md-alignment-center-center">
-      <md-button class="md-primary md-raised" :to="{name: 'policy-create', params: {organizationId}}">
-        Create new policy
-      </md-button>
     </div>
   </div>
 </template>
