@@ -1,7 +1,11 @@
 <template>
   <div v-if="organization">
     <organization-details @submit="updateOrganization" :organization="organization"></organization-details>
-    <policy-instances :policies="organization.policies" :organizationId="organizationId" />
+    <policy-instances 
+      :policies="organization.policies" 
+      :organizationId="organizationId" 
+      :deleteAssociation="removePolicyInstance"
+    />
   </div>
 </template>
 
@@ -38,6 +42,10 @@ export default {
         this.changeSnackbarMessage({message: `Error saving organization: "${err}"`})
       }
       this.loadOrganizationData()
+    },
+    async removePolicyInstance(policyId) {
+      await this.$udaru.removeOrganizationPolicy(this.organizationId, policyId)
+      await this.loadOrganizationData()
     },
     async loadOrganizationData() {
       await this.loadOrganization(this.organizationId)

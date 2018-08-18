@@ -1,6 +1,6 @@
 <template>
   <div v-if="user">
-    <user-details @submit="updateUser" :user="user" />
+    <user-details @success="loadUserData" :user="user" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Teams</span>
@@ -30,7 +30,11 @@
         </md-table-row>
       </md-table>
     </div>
-    <policy-instances :policies="user.policies" :organizationId="organizationId" />
+    <policy-instances 
+      :policies="user.policies" 
+      :organizationId="organizationId" 
+      :deleteAssociation="removePolicyInstance"
+    />
   </div>
 </template>
 
@@ -95,6 +99,10 @@ export default {
 
       this.selectedTeamId = null
       this.loadUserData()
+    },
+    async removePolicyInstance(policyId) {
+      await this.$udaru.removeUserPolicy(this.organizationId, this.userId, policyId)
+      await this.loadUserData()
     },
     loadUserData() {
       this.loadUser({organizationId: this.organizationId, userId: this.userId})

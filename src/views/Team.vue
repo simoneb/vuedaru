@@ -30,7 +30,11 @@
         </md-table-row>
       </md-table>
     </div>
-    <policy-instances :policies="team.policies" :organizationId="organizationId" />
+    <policy-instances 
+      :policies="team.policies" 
+      :organizationId="organizationId"
+      :deleteAssociation="removePolicyInstance"
+    />
   </div>
 </template>
 
@@ -103,6 +107,10 @@ export default {
       } catch (err) {
         this.changeSnackbarMessage({message: `Error removing user from team: ${err}`})
       }
+    },
+    async removePolicyInstance(policyId) {
+      await this.$udaru.removeTeamPolicy(this.organizationId, this.teamId, policyId)
+      await this.loadTeamData()
     },
     loadTeamData() {
       this.loadTeam({organizationId: this.organizationId, teamId: this.teamId})

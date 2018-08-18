@@ -146,6 +146,33 @@ export default function plugin(Vue) {
       )
       return data
     },
+    async removeUserPolicy(organizationId, userId, policyId) {
+      const {data} = await Vue.axios.delete(
+        `/authorization/users/${encodeURIComponent(userId)}/policies/${encodeURIComponent(policyId)}`,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
+    async removeTeamPolicy(organizationId, teamId, policyId) {
+      const {data} = await Vue.axios.delete(
+        `/authorization/teams/${encodeURIComponent(teamId)}/policies/${encodeURIComponent(policyId)}`,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
+    async removeOrganizationPolicy(organizationId, policyId) {
+      const {data} = await Vue.axios.delete(
+        `/authorization/organizations/${encodeURIComponent(organizationId)}/policies/${encodeURIComponent(policyId)}`,
+        {
+          headers: {org: organizationId}
+        }
+      )
+      return data
+    },
     ping() {
       return Vue.axios.get('/ping')
     }
