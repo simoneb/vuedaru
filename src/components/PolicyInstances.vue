@@ -6,7 +6,7 @@
   <md-table v-model="instances">
     <md-table-empty-state 
       md-label="No instances"
-      md-description="No policy instances for this policy">
+      md-description="Assign to Organizations, Teams or Users to create instances of this policy.">
     </md-table-empty-state>
     
     <md-table-row slot="md-table-row" slot-scope="{item}">
