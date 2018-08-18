@@ -7,6 +7,11 @@
       <div class="md-layout md-alignment-center-center">
         <div class="md-layout-item md-size-50">
       <form @submit.prevent="checkAccess" novalidate autocomplete="off">
+        <user-select 
+          :organizationId="organizationId" 
+          :selectedUserId="selectedUserId" 
+          @selected="userId => selectedUserId = userId" 
+        />
         <md-field>
           <label for="actions"></label>
             <md-select 
@@ -43,19 +48,26 @@
 <script>
 import {flow, flatMap, get, reduce, uniq} from 'lodash/fp'
 
+import UserSelect from '../components/UserSelect'
+
 export default {
   name: 'authorization-check',
   props: {
-    organizationId: String,
-    userId: String
+    organizationId: String
+  },
+  components: {
+    UserSelect
   },
   data() {
     return {
-      selectedAction: null,
+      access: null,
+
       actions: [],
-      selectedResource: null,
       resources: [],
-      access: null
+
+      selectedAction: null,
+      selectedResource: null,
+      selectedUserId: null
     }
   },
   computed: {
@@ -75,7 +87,7 @@ export default {
     async checkAccess() {
       const {access} = await this.$udaru.canAccess(
         this.organizationId,
-        this.userId,
+        this.selectedUserId,
         this.selectedAction,
         this.selectedResource
       )

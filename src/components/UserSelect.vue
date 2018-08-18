@@ -3,7 +3,7 @@
   <md-select 
     :disabled="!anyUsers" 
     md-dense 
-    @md-selected="value => $emit('selected', value)" 
+    @md-selected="userId => $emit('selected', userId)" 
     :placeholder="anyUsers ? 'Select a user' : 'No available users'"
     :value="selectedUserId">
     <md-option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</md-option>
@@ -22,7 +22,12 @@ export default {
   name: 'user-select',
   props: {
     organizationId: String,
-    exclude: Array,
+    exclude: {
+      type: Array,
+      default() {
+        return []
+      }
+    },
     selectedUserId: String
   },
   computed: {

@@ -20,7 +20,7 @@ export default {
     async doCreateUser(user) {
       try {
         await this.createUser({organizationId: this.organizationId, user})
-        this.changeSnackbarMessage({message: 'User saved!'})
+        this.changeSnackbarMessage({message: 'User created!'})
         this.$router.push({name: 'users', params: {organizationId: this.organizationId}})
       } catch (err) {
         this.changeSnackbarMessage({message: `Error creating user: "${err}"`})

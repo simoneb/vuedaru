@@ -77,22 +77,32 @@ export default {
       this.loadTeamData()
     },
     async addUser(userId) {
-      await this.addUserToTeam({
-        organizationId: this.organizationId,
-        teamId: this.teamId,
-        userId
-      })
-      this.selectedUserId = null
-      this.loadTeamData()
+      try {
+        await this.addUserToTeam({
+          organizationId: this.organizationId,
+          teamId: this.teamId,
+          userId
+        })
+        this.selectedUserId = null
+        this.changeSnackbarMessage({message: 'User successfully added to team'})
+        this.loadTeamData()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error adding user to team: ${err}`})
+      }
     },
     async removeUser(userId) {
-      await this.removeUserFromTeam({
-        organizationId: this.organizationId,
-        teamId: this.teamId,
-        userId
-      })
-      this.selectedUserId = null
-      this.loadTeamData()
+      try {
+        await this.removeUserFromTeam({
+          organizationId: this.organizationId,
+          teamId: this.teamId,
+          userId
+        })
+        this.selectedUserId = null
+        this.changeSnackbarMessage({message: 'User successfully removed from team'})
+        this.loadTeamData()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error removing user from team: ${err}`})
+      }
     },
     loadTeamData() {
       this.loadTeam({organizationId: this.organizationId, teamId: this.teamId})

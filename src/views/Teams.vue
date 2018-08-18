@@ -1,5 +1,12 @@
 <template>
   <div class="teams">
+    <md-dialog-confirm
+      v-if="idToDelete"
+      :md-active="!!idToDelete"
+      md-title="Confirm delete"
+      :md-content="'Delete team ' + idToDelete + '?'"
+      @md-cancel="onCancel"
+      @md-confirm="onConfirm" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title">Teams</span>
@@ -28,7 +35,7 @@
           <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
           <md-table-cell md-label="# Users">{{item.usersCount || '-'}}</md-table-cell>
           <md-table-cell md-label="Actions">
-            <md-button class="md-icon-button md-dense md-primary">
+            <md-button @click="deleteTeam(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
               <md-tooltip>Delete team</md-tooltip>
             </md-button>
@@ -47,7 +54,7 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {loadTeams} from '../state/actions'
+import {loadTeams, changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
 
 const toLower = text => text.toString().toLowerCase()
@@ -73,18 +80,38 @@ export default {
   },
   data() {
     return {
+      idToDelete: null,
       search: null,
       searchResults: null
     }
   },
   methods: {
-    ...mapActions([loadTeams]),
+    ...mapActions(loadTeams, changeSnackbarMessage),
     searchOnTable() {
       this.searchResults = searchByName(this.getTeams(this.organizationId), this.search)
+    },
+    deleteTeam(idToDelete) {
+      this.idToDelete = idToDelete
+    },
+    async onConfirm() {
+      try {
+        await this.$udaru.deleteTeam(this.idToDelete)
+        this.idToDelete = null
+        this.changeSnackbarMessage({message: 'Team deleted'})
+        this.loadTeamsData()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error deleting team: ${err}`})
+      }
+    },
+    onCancel() {
+      this.idToDelete = null
+    },
+    loadTeamsData() {
+      this.loadTeams(this.organizationId)
     }
   },
-  async created() {
-    await this.loadTeams(this.organizationId)
+  async mounted() {
+    this.loadTeamsData()
   }
 }
 </script>

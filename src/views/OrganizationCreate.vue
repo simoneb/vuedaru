@@ -20,7 +20,7 @@ export default {
         this.changeSnackbarMessage({message: 'Organization saved!'})
         this.$router.push({name: 'select-organization'})
       } catch (err) {
-        this.changeSnackbarMessage({message: `Error creating organization: "${err}"`})
+        this.changeSnackbarMessage({message: `Error creating organization: ${err}`})
       }
     }
   }

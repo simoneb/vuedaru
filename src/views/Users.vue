@@ -1,5 +1,12 @@
 <template>
   <div class="users">
+    <md-dialog-confirm
+      v-if="idToDelete"
+      :md-active="!!idToDelete"
+      md-title="Confirm delete"
+      :md-content="'Delete user ' + idToDelete + '?'"
+      @md-cancel="onCancel"
+      @md-confirm="onConfirm" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <div class="md-title">Users</div>
@@ -27,7 +34,7 @@
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
           <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
           <md-table-cell md-label="Actions">
-            <md-button class="md-icon-button md-dense md-primary">
+            <md-button @click="deleteUser(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
               <md-tooltip>Delete user</md-tooltip>
             </md-button>
@@ -44,9 +51,10 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex'
+import {mapGetters, mapState} from 'vuex'
+
 import {mapActions} from '../state/utils'
-import {loadUsers} from '../state/actions'
+import {loadUsers, changeSnackbarMessage, loadCurrentUser} from '../state/actions'
 
 const toLower = text => text.toString().toLowerCase()
 
@@ -65,24 +73,53 @@ export default {
   },
   computed: {
     ...mapGetters(['getUsers']),
+    ...mapState(['currentUser']),
     searched() {
       return this.searchResults || this.getUsers(this.organizationId)
     }
   },
   data() {
     return {
+      idToDelete: null,
       search: null,
       searchResults: null
     }
   },
   methods: {
-    ...mapActions([loadUsers]),
+    ...mapActions(loadUsers, changeSnackbarMessage, loadCurrentUser),
     searchOnTable() {
       this.searchResults = searchByName(this.getUsers(this.organizationId), this.search)
+    },
+    deleteUser(idToDelete) {
+      if (this.isCurrentUser(idToDelete)) {
+        return this.changeSnackbarMessage({message: 'You cannot delete yourself!'})
+      }
+
+      this.idToDelete = idToDelete
+    },
+    async onConfirm() {
+      try {
+        await this.$udaru.deleteUser(this.idToDelete)
+        this.idToDelete = null
+        this.changeSnackbarMessage({message: 'User deleted'})
+        this.loadUsersData()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error deleting user: ${err}`})
+      }
+    },
+    onCancel() {
+      this.idToDelete = null
+    },
+    isCurrentUser(userId) {
+      return this.currentUser && this.currentUser.id === userId
+    },
+    loadUsersData() {
+      this.loadUsers(this.organizationId)
     }
   },
   async mounted() {
-    await this.loadUsers(this.organizationId)
+    this.loadUsersData()
+    this.loadCurrentUser()
   }
 }
 </script>

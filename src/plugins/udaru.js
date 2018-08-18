@@ -36,8 +36,16 @@ export default function plugin(Vue) {
       const {data} = await Vue.axios.post(`/authorization/users`, user, {headers: {org: organizationId}})
       return data
     },
+    async deleteUser(id) {
+      const {data} = await Vue.axios.delete(`/authorization/users/${encodeURIComponent(id)}`)
+      return data
+    },
     async createTeam(organizationId, team) {
       const {data} = await Vue.axios.post(`/authorization/teams`, team, {headers: {org: organizationId}})
+      return data
+    },
+    async deleteTeam(id) {
+      const {data} = await Vue.axios.delete(`/authorization/teams/${encodeURIComponent(id)}`)
       return data
     },
     async updateTeam(organizationId, teamId, team) {
@@ -110,6 +118,12 @@ export default function plugin(Vue) {
     async getPolicy(organizationId, policyId) {
       const {data} = await Vue.axios.get(`/authorization/policies/${encodeURIComponent(policyId)}`, {
         headers: {org: organizationId}
+      })
+      return data
+    },
+    async deletePolicy(id, serviceKey) {
+      const {data} = await Vue.axios.delete(`/authorization/policies/${encodeURIComponent(id)}`, {
+        params: {sig: serviceKey}
       })
       return data
     },

@@ -1,5 +1,14 @@
 <template>
   <div class="policies">
+    <md-dialog-prompt
+      v-if="idToDelete"
+      :md-active="!!idToDelete"
+      v-model="serviceKey"
+      md-title="Confirm delete"
+      :md-content="'Deleting policy ' + idToDelete + ' requires a service key, please type it below to proceed'"
+      md-input-placeholder="Service key"
+      @md-cancel="onCancel"
+      @md-confirm="onConfirm" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <div class="md-title">Policies</div>
@@ -30,7 +39,7 @@
             <textarea readonly :value="item.statements | json"></textarea>
           </md-table-cell>
           <md-table-cell md-label="Actions">
-            <md-button class="md-icon-button md-dense md-primary">
+            <md-button @click="deletePolicy(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
               <md-tooltip>Delete policy</md-tooltip>
             </md-button>
@@ -48,8 +57,9 @@
 
 <script>
 import {mapGetters} from 'vuex'
+
+import {loadPolicies, changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
-import {loadPolicies} from '../state/actions'
 
 const toLower = text => text.toString().toLowerCase()
 
@@ -74,18 +84,40 @@ export default {
   },
   data() {
     return {
+      idToDelete: null,
+      serviceKey: null,
+
       search: null,
       searchResults: null
     }
   },
   methods: {
-    ...mapActions([loadPolicies]),
+    ...mapActions(loadPolicies, changeSnackbarMessage),
     searchOnTable() {
       this.searchResults = searchByName(this.getPolicies(this.organizationId), this.search)
+    },
+    deletePolicy(idToDelete) {
+      this.idToDelete = idToDelete
+    },
+    async onConfirm() {
+      try {
+        await this.$udaru.deletePolicy(this.idToDelete, this.serviceKey)
+        this.idToDelete = null
+        this.changeSnackbarMessage({message: 'Policy deleted'})
+        this.loadPoliciesData()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error deleting policy: ${err}`})
+      }
+    },
+    onCancel() {
+      this.idToDelete = null
+    },
+    loadPoliciesData() {
+      this.loadPolicies(this.organizationId)
     }
   },
   async mounted() {
-    await this.loadPolicies(this.organizationId)
+    this.loadPoliciesData()
   }
 }
 </script>

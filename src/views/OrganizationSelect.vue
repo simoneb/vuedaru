@@ -3,9 +3,8 @@
     <md-dialog-confirm
       v-if="idToDelete"
       :md-active="!!idToDelete"
+      md-title="Confirm delete"
       :md-content="'Delete organization ' + idToDelete + '?'"
-      md-confirm-text="Yes"
-      md-cancel-text="No"
       @md-cancel="onCancel"
       @md-confirm="onConfirm" />
     <div class="md-layout-item md-size-60">
@@ -58,17 +57,21 @@ export default {
   methods: {
     ...mapActions(loadOrganizations, loadCurrentUser, changeSnackbarMessage),
     deleteOrganization(idToDelete) {
-      if (this.currentUser.organizationId === idToDelete) {
+      if (this.isCurrentOrganization(idToDelete)) {
         return this.changeSnackbarMessage({message: 'You cannot delete the organization you belong to!'})
       }
 
       this.idToDelete = idToDelete
     },
     async onConfirm() {
-      await this.$udaru.deleteOrganization(this.idToDelete)
-      this.idToDelete = null
-
-      this.loadOrganizations()
+      try {
+        await this.$udaru.deleteOrganization(this.idToDelete)
+        this.idToDelete = null
+        this.changeSnackbarMessage({message: 'Organization deleted'})
+        this.loadOrganizations()
+      } catch (err) {
+        this.changeSnackbarMessage({message: `Error deleting organization: ${err}`})
+      }
     },
     onCancel() {
       this.idToDelete = null

@@ -16,7 +16,7 @@
                 name="id"
                 v-validate="'required|udaru_id'" 
                 autofocus 
-                :disabled="!creating" 
+                :readonly="!creating" 
                 v-model="localUser.id" 
               />
               <span class="md-error">{{errors.first('id')}}</span>

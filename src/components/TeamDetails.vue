@@ -16,7 +16,7 @@
                 name="id"
                 v-validate="'required|udaru_id'" 
                 autofocus 
-                :disabled="!creating" 
+                :readonly="!creating" 
                 v-model="localTeam.id" 
               />
               <span class="md-error">{{errors.first('id')}}</span>
@@ -58,6 +58,31 @@
               <span class="md-error">{{errors.first('metadata')}}</span>
             </md-field>
           </div>
+          <div v-if="creating">
+              <md-field :class="{'md-invalid': errors.has('userId')}">
+                <label for="userId">Administrator ID</label>
+                <md-input 
+                  id="userId" 
+                  name="userId"
+                  v-validate="'udaru_id'"
+                  autofocus 
+                  :readonly="!creating"
+                  v-model="localTeam.user.id" 
+                />
+                <span class="md-error">{{errors.first('userId')}}</span>
+              </md-field>
+            </div>
+            <div v-if="creating">
+              <md-field :class="{'md-invalid': errors.has('userName')}">
+                <label for="userName">Administrator name</label>
+                <md-input 
+                  id="userName" 
+                  name="userName" 
+                  v-model="localTeam.user.name" 
+                />
+                <span class="md-error">{{errors.first('userName')}}</span>
+              </md-field>
+            </div>        
         </div>
       </div>
     </md-content>
@@ -78,7 +103,8 @@ export default {
         id: null,
         name: null,
         description: null,
-        metadata: {}
+        metadata: {},
+        user: {}
       })
     }
   },
@@ -90,7 +116,14 @@ export default {
   methods: {
     async validate() {
       if (await this.$validator.validateAll()) {
-        this.$emit('submit', this.localTeam)
+        const team = {...this.localTeam}
+
+        // TODO in theory only username would be enough, udaru will generate an id for the user
+        if (this.creating && (!this.localTeam.user.id || !this.localTeam.user.name)) {
+          delete team.user
+        }
+
+        this.$emit('submit', team)
       }
     }
   },
