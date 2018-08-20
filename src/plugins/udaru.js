@@ -179,10 +179,10 @@ export default function plugin(Vue) {
       )
       return data
     },
-    async addOrUpdateTeamPolicy(organizationId, teamId, policy) {
+    async addOrUpdateTeamPolicy(organizationId, teamId, policyInstance) {
       const {data} = await Vue.axios.put(
         `/authorization/teams/${encodeURIComponent(teamId)}/policies`,
-        {policies: [policy]},
+        {policies: [policyInstance]},
         {
           headers: {org: organizationId}
         }

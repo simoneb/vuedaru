@@ -113,8 +113,8 @@ export default {
       await this.$udaru.removeTeamPolicy(this.organizationId, this.teamId, policyId)
       await this.loadTeamData()
     },
-    async addPolicyInstance(policy) {
-      await this.$udaru.addOrUpdateTeamPolicy(this.organizationId, this.teamId, policy)
+    async addPolicyInstance(policyInstance) {
+      await this.$udaru.addOrUpdateTeamPolicy(this.organizationId, this.teamId, policyInstance)
       await this.loadTeamData()
     },
     loadTeamData() {

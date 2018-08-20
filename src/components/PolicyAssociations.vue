@@ -10,9 +10,16 @@
   />
 
   <md-dialog :md-active.sync="addingAssociation">
-    <md-dialog-title>Add policy</md-dialog-title>
+    <md-dialog-title class="md-primary">Add policy</md-dialog-title>
     <md-dialog-content>
       <policy-select :organizationId="organizationId" @selected="policy => selectedPolicy = policy" />
+      <form novalidate autocomplete="false" v-if="variableNames.length">
+        <span class="md-title">Variables</span>
+        <md-field v-for="variable in variableNames" :key="variable" :class="{'md-invalid': errors.has(variable)}">
+          <label :for="variable">{{variable}}</label>
+          <md-input :id="variable" :name="variable" v-validate="'required'" v-model="variables[variable]" />
+        </md-field>
+      </form>
     </md-dialog-content>
     <md-dialog-actions>
       <md-button @click="addingAssociation = false">Cancel</md-button>
@@ -53,9 +60,41 @@
 </div>
 </template>
 <script>
+import {compact, uniq, flow, map, flatMap, get, pick, values, flatten} from 'lodash/fp'
+
 import {changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
 import PolicySelect from '../components/PolicySelect'
+
+function* parseVariable(string) {
+  const variableRegex = /\{(\w+)\}?/g
+
+  let match
+
+  while ((match = variableRegex.exec(string))) {
+    yield match[1]
+  }
+}
+
+const parseVariables = flow(
+  get('statements.Statement'),
+  flatMap(
+    flow(
+      pick(['Action', 'Resource']),
+      values,
+      flatten
+    )
+  ),
+  map(
+    flow(
+      parseVariable,
+      Array.from
+    )
+  ),
+  flatten,
+  compact,
+  uniq
+)
 
 export default {
   name: 'policy-associations',
@@ -84,7 +123,13 @@ export default {
     return {
       addingAssociation: false,
       idToDelete: null,
-      selectedPolicy: null
+      selectedPolicy: null,
+      variables: {}
+    }
+  },
+  computed: {
+    variableNames() {
+      return parseVariables(this.selectedPolicy)
     }
   },
   methods: {
@@ -106,7 +151,7 @@ export default {
     },
     async confirmAdd() {
       try {
-        await this.addAssociation(this.selectedPolicy)
+        await this.addAssociation({id: this.selectedPolicy.id, variables: this.variables})
         this.addingAssociation = null
         this.selectedPolicy = null
         this.changeSnackbarMessage({message: 'Policy association addedd successfully'})

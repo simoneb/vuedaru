@@ -42,7 +42,7 @@ export default {
   methods: {
     ...mapActions([loadPolicies]),
     policySelected() {
-      this.$emit('selected', {id: this.selectedPolicyId})
+      this.$emit('selected', this.selectedPolicy)
     }
   },
   async created() {
