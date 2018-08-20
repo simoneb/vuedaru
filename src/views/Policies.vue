@@ -31,7 +31,8 @@
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
           <md-table-cell md-label="Version" md-numeric>{{item.version}}</md-table-cell>
           <md-table-cell md-label="Statements">
-            <textarea readonly :value="item.statements | json"></textarea>
+            <textarea v-if="item.statements.Statement" readonly :value="item.statements.Statement | json"></textarea>
+            <span v-else> - </span>
           </md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button @click="deletePolicy(item.id)" class="md-icon-button md-dense md-primary">
