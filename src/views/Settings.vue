@@ -129,6 +129,9 @@ export default {
     async configureServer() {
       if (this.errors.has('url')) return
 
+      // trim trailing slash because we use rooted API paths
+      this.url = this.url.replace(/\/+$/g, '')
+
       try {
         this.checkingUrl = true
         this.$settings.setUrl(this.url)
