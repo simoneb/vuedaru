@@ -32,10 +32,10 @@
           <span class="md-list-item-text">Policies</span>
         </md-list-item>
 
-        <md-list-item :to="{name: 'shared-policies'}">
+        <!-- <md-list-item :to="{name: 'shared-policies'}">
           <md-icon>vpn_lock</md-icon>
           <span class="md-list-item-text">Shared Policies</span>
-        </md-list-item>
+        </md-list-item> -->
 
         <md-divider class="md-inset" />
 

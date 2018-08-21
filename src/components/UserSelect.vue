@@ -1,14 +1,12 @@
 <template>
-<md-field class="user-select-field">
-  <md-select 
-    :disabled="!anyUsers" 
-    md-dense 
-    @md-selected="userId => $emit('selected', userId)" 
-    :placeholder="anyUsers ? 'Select a user' : 'No available users'"
-    :value="selectedUserId">
-    <md-option v-for="user in users" :key="user.id" :value="user.id">{{user.name}}</md-option>
-  </md-select>
-</md-field>
+  <md-autocomplete 
+    :disabled="!anyUsers"
+    md-dense
+    :md-options="users.map(({id}) => id)"
+    v-model="localValue"
+    :md-layout="layout"
+    :md-input-placeholder="anyUsers ? 'Select a user' : 'No available users'"
+  />
 </template>
 
 <script>
@@ -22,13 +20,16 @@ export default {
   name: 'user-select',
   props: {
     organizationId: String,
+    value: String,
+    layout: {
+      type: String
+    },
     exclude: {
       type: Array,
       default() {
         return []
       }
-    },
-    selectedUserId: String
+    }
   },
   computed: {
     ...mapGetters(['getUsers']),
@@ -37,6 +38,14 @@ export default {
     },
     anyUsers() {
       return !!this.users.length
+    },
+    localValue: {
+      get() {
+        return this.value
+      },
+      set(value) {
+        this.$emit('input', value)
+      }
     }
   },
   methods: {

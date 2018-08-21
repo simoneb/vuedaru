@@ -1,5 +1,5 @@
 export default {
   install(Vue) {
-    Vue.filter('json', value => JSON.stringify(value, null, 2))
+    Vue.filter('json', (value, indent = true) => JSON.stringify(value, null, indent ? 2 : 0))
   }
 }

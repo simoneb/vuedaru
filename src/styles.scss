@@ -25,5 +25,9 @@ html, body, .app, .md-app, .md-app-content {
 
   > .md-content.md-theme-default {
     border: 1px solid md-theme(primary); 
+
+    form:first-child {
+      margin-top: 20px;
+    }
   }
 }

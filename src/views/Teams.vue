@@ -35,7 +35,7 @@
             </router-link>
           </md-table-cell>
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-          <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
+          <md-table-cell md-label="Metadata"><metadata :value="item.metadata" /></md-table-cell>
           <md-table-cell md-label="# Users" md-numeric>{{item.usersCount || '-'}}</md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button @click="deleteTeam(item.id)" class="md-icon-button md-dense md-primary">
@@ -54,6 +54,7 @@ import {mapGetters} from 'vuex'
 
 import {loadTeams, changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
+import Metadata from '../components/Metadata'
 
 const toLower = text => text.toString().toLowerCase()
 
@@ -69,6 +70,9 @@ export default {
   name: 'teams',
   props: {
     organizationId: String
+  },
+  components: {
+    Metadata
   },
   computed: {
     ...mapGetters(['getTeams']),

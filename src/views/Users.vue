@@ -36,7 +36,7 @@
             </router-link>
           </md-table-cell>
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-          <md-table-cell md-label="Organization ID">{{item.organizationId}}</md-table-cell>
+          <md-table-cell md-label="Metadata"><metadata :value="item.metadata" /></md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button @click="deleteUser(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
@@ -54,6 +54,7 @@ import {mapGetters, mapState} from 'vuex'
 
 import {mapActions} from '../state/utils'
 import {loadUsers, changeSnackbarMessage, loadCurrentUser} from '../state/actions'
+import Metadata from '../components/Metadata'
 
 const toLower = text => text.toString().toLowerCase()
 
@@ -69,6 +70,9 @@ export default {
   name: 'users',
   props: {
     organizationId: String
+  },
+  components: {
+    Metadata
   },
   computed: {
     ...mapGetters(['getUsers']),

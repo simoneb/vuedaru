@@ -17,9 +17,11 @@
       </md-table-cell>
       <md-table-cell md-label="Entity type">
         <md-icon>{{mapEntityTypeToIcon(item.entityType)}}</md-icon>
-        <md-tooltip>{{item.entityType}}</md-tooltip>
+        <span class="entity-type"> {{item.entityType}}</span>
       </md-table-cell>
-      <md-table-cell md-label="Variables"><pre>{{item.variables}}</pre></md-table-cell>
+      <md-table-cell md-label="Variables">
+        <metadata :value="item.variables" />
+      </md-table-cell>
       <md-table-cell md-label="Instance" md-numeric>{{item.instance}}</md-table-cell>
     </md-table-row>
   </md-table>
@@ -30,6 +32,7 @@ import {mapGetters} from 'vuex'
 
 import {loadPolicyInstances} from '../state/actions'
 import {mapActions} from '../state/utils'
+import Metadata from './Metadata'
 
 export default {
   name: 'policy-instances',
@@ -42,6 +45,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  components: {
+    Metadata
   },
   computed: {
     ...mapGetters(['getPolicyInstances']),
@@ -70,3 +76,15 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.entity-type {
+  text-transform: capitalize;
+  margin-left: 5px;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+}
+</style>

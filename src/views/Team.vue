@@ -4,8 +4,10 @@
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Users</span>
-          <user-select :selectedUserId="selectedUserId" @selected="userId => selectedUserId = userId" :exclude="team.users" :organizationId="organizationId"></user-select>
+        <div class="md-toolbar-section-end">
+          <user-select layout="box" v-model="selectedUserId" :exclude="team.users" :organizationId="organizationId"></user-select>
           <md-button :disabled="!selectedUserId" @click="addUser(selectedUserId)">Add user</md-button>
+        </div>
       </md-toolbar>
 
       <md-table v-model="team.users">    
@@ -88,7 +90,6 @@ export default {
           teamId: this.teamId,
           userId
         })
-        this.selectedUserId = null
         this.changeSnackbarMessage({message: 'User successfully added to team'})
         this.loadTeamData()
       } catch (err) {
@@ -102,7 +103,6 @@ export default {
           teamId: this.teamId,
           userId
         })
-        this.selectedUserId = null
         this.changeSnackbarMessage({message: 'User successfully removed from team'})
         this.loadTeamData()
       } catch (err) {

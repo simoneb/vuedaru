@@ -9,29 +9,18 @@
       @md-confirm="confirmRemove" 
   />
 
-  <md-dialog :md-active.sync="addingAssociation">
-    <md-dialog-title class="md-primary">Add policy</md-dialog-title>
-    <md-dialog-content>
-      <policy-select :organizationId="organizationId" @selected="policy => selectedPolicy = policy" />
-      <form novalidate autocomplete="false" v-if="variableNames.length">
-        <span class="md-title">Variables</span>
-        <md-field v-for="variable in variableNames" :key="variable" :class="{'md-invalid': errors.has(variable)}">
-          <label :for="variable">{{variable}}</label>
-          <md-input :id="variable" :name="variable" v-validate="'required'" v-model="variables[variable]" />
-        </md-field>
-      </form>
-    </md-dialog-content>
-    <md-dialog-actions>
-      <md-button @click="addingAssociation = false">Cancel</md-button>
-      <md-button class="md-raised md-primary" @click="confirmAdd">Ok</md-button>
-    </md-dialog-actions>
-  </md-dialog>
+  <add-policy-association 
+    :organizationId="organizationId" 
+    :active.sync="addingAssociation" 
+    @add-association="confirmAdd" 
+  />
   
   <md-toolbar md-elevation="0">
     <span class="md-title" style="flex: 1">Policies</span>
     <md-button @click="addingAssociation = true">Assign policy</md-button>
   </md-toolbar>
-  <md-table v-model="policies">
+
+  <md-table v-model="policies" md-model-id="">
 
     <md-table-empty-state 
       md-label="No policies"
@@ -42,11 +31,11 @@
     <md-table-row slot="md-table-row" slot-scope="{item}">
       <md-table-cell md-label="ID">
         <router-link :to="{name: 'policy', params: {organizationId, policyId: item.id}}">
-        {{item.id}}
+          {{item.id}}
         </router-link>
       </md-table-cell>
       <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-      <md-table-cell md-label="Variables"><pre>{{item.variables}}</pre></md-table-cell>
+      <md-table-cell md-label="Variables"><metadata :value="item.variables" /></md-table-cell>
       <md-table-cell md-label="Version" md-numeric>{{item.version}}</md-table-cell>
       <md-table-cell md-label="Instance" md-numeric>{{item.instance}}</md-table-cell>
       <md-table-cell md-label="Actions">
@@ -60,41 +49,10 @@
 </div>
 </template>
 <script>
-import {compact, uniq, flow, map, flatMap, get, pick, values, flatten} from 'lodash/fp'
-
 import {changeSnackbarMessage} from '../state/actions'
 import {mapActions} from '../state/utils'
-import PolicySelect from '../components/PolicySelect'
-
-function* parseVariable(string) {
-  const variableRegex = /\{(\w+)\}?/g
-
-  let match
-
-  while ((match = variableRegex.exec(string))) {
-    yield match[1]
-  }
-}
-
-const parseVariables = flow(
-  get('statements.Statement'),
-  flatMap(
-    flow(
-      pick(['Action', 'Resource']),
-      values,
-      flatten
-    )
-  ),
-  map(
-    flow(
-      parseVariable,
-      Array.from
-    )
-  ),
-  flatten,
-  compact,
-  uniq
-)
+import AddPolicyAssociation from '../components/AddPolicyAssociation'
+import Metadata from '../components/Metadata'
 
 export default {
   name: 'policy-associations',
@@ -117,19 +75,13 @@ export default {
     }
   },
   components: {
-    PolicySelect
+    AddPolicyAssociation,
+    Metadata
   },
   data() {
     return {
       addingAssociation: false,
-      idToDelete: null,
-      selectedPolicy: null,
-      variables: {}
-    }
-  },
-  computed: {
-    variableNames() {
-      return parseVariables(this.selectedPolicy)
+      idToDelete: null
     }
   },
   methods: {
@@ -149,11 +101,10 @@ export default {
     cancelRemove() {
       this.idToDelete = null
     },
-    async confirmAdd() {
+    async confirmAdd({id, variables}) {
       try {
-        await this.addAssociation({id: this.selectedPolicy.id, variables: this.variables})
+        await this.addAssociation({id, variables})
         this.addingAssociation = null
-        this.selectedPolicy = null
         this.changeSnackbarMessage({message: 'Policy association addedd successfully'})
       } catch (err) {
         this.changeSnackbarMessage({message: `Error adding policy association: ${err}`})

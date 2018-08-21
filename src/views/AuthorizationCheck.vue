@@ -1,47 +1,41 @@
 <template>
   <div class="section">
     <md-toolbar md-elevation="0">
-      <div class="md-title">Authorization check</div>
+      <div class="md-title" style="flex: 1">Authorization check</div>
+      <md-button :disabled="!canCheck" @click="checkAccess">Check access</md-button>
     </md-toolbar>
     <md-content>
+      <div class="md-subheading description">Check if a user can perform an action on a resource</div>
       <div class="md-layout md-alignment-center-center">
         <div class="md-layout-item md-size-50">
-      <form @submit.prevent="checkAccess" novalidate autocomplete="off">
-        <user-select 
-          :organizationId="organizationId" 
-          :selectedUserId="selectedUserId" 
-          @selected="userId => selectedUserId = userId" 
-        />
-        <md-field>
-          <label for="actions"></label>
-            <md-select 
-              required 
-              id="actions" 
-              v-model="selectedAction" 
-              placeholder="Select an Action">
-              <md-option v-for="action in actions" :key="action" :value="action">{{action}}</md-option>
-          </md-select>
-        </md-field>
-        <md-field>
-          <label for="resources"></label>
-            <md-select 
-              required 
-              id="resources" 
-              v-model="selectedResource" 
-              placeholder="Select a Resource">
-              <md-option v-for="resource in resources" :key="resource" :value="resource">{{resource}}</md-option>
-          </md-select>
-        </md-field>
-        <md-button class="md-primary md-raised" type="submit">Check access</md-button>
-      <md-icon 
-        v-show="access !== null" 
-        :class="{'md-primary': access === true, 'md-accent': access === false}"
-        class="md-size-2x">
-          {{'thumb_' + upOrDown}}
+          <form novalidate autocomplete="off">
+            <user-select :organizationId="organizationId" v-model="selectedUserId" />
+            <md-autocomplete 
+              :md-options="actions"
+              v-model="selectedAction"
+              :md-input-placeholder="actions.length ? 'Select an action' : 'No available actions'"
+            />
+            <md-autocomplete 
+              :md-options="resources"
+              v-model="selectedResource"
+              :md-input-placeholder="resources.length ? 'Select a resource' : 'No available resources'"
+            />
+          </form>
+        </div>
+      </div>
+      <div class="md-layout md-alignment-center-center result">
+        <div class="md-item">
+        <md-icon 
+          :style="{visibility: access !== null ? 'visible' : 'hidden'}"
+          :class="{'md-primary': access === true, 'md-accent': access === false}"
+          class="md-size-4x">
+            {{'thumb_' + upOrDown}}
         </md-icon>
-      </form>
         </div>
+        <div class="md-item result-text md-display-2">
+          {{access !== null ? `Access ${access ? 'granted' : 'denied'}` : ''}}
         </div>
+      </div>
     </md-content>
   </div>
 </template>
@@ -73,6 +67,9 @@ export default {
   computed: {
     upOrDown() {
       return this.access ? 'up' : 'down'
+    },
+    canCheck() {
+      return this.selectedUserId && this.selectedAction && this.selectedResource
     }
   },
   watch: {
@@ -116,3 +113,15 @@ export default {
   }
 }
 </script>
+<style lang="scss" scoped>
+.description {
+  margin: 10px 0 20px 20px;
+}
+.result {
+  margin: 15px 0;
+}
+
+.result-text {
+  margin-left: 10px;
+}
+</style>

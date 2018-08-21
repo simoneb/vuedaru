@@ -29,11 +29,26 @@
             </router-link>
           </md-table-cell>
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
-          <md-table-cell md-label="Version" md-numeric>{{item.version}}</md-table-cell>
           <md-table-cell md-label="Statements">
-            <textarea v-if="item.statements.Statement" readonly :value="item.statements.Statement | json"></textarea>
+            <ul v-if="item.statements.Statement">
+              <li v-for="({Action, Effect, Resource}, index) in item.statements.Statement" :key="index">
+                <strong>{{Effect}}</strong>
+                <ul v-if="Action.length > 1 || Resource.length > 1">
+                  <li>
+                    action{{Action.length > 1 ? 's' : ''}} <code>{{Action.join(', ')}}</code>
+                  </li>
+                  <li>
+                    on resource{{Resource.length > 1 ? 's' : ''}} <code>{{Resource.join(', ')}}</code>
+                  </li>
+                </ul>
+                <span v-else>
+                  action <code>{{Action[0]}}</code> on resource <code>{{Resource[0]}}</code>
+                </span>
+              </li>
+            </ul>
             <span v-else> - </span>
           </md-table-cell>
+          <md-table-cell md-label="Version" md-numeric>{{item.version}}</md-table-cell>
           <md-table-cell md-label="Actions">
             <md-button @click="deletePolicy(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
@@ -123,5 +138,10 @@ export default {
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
+}
+
+ul {
+  margin: 0;
+  padding-left: 5px;
 }
 </style>

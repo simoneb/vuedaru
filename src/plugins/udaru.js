@@ -165,6 +165,16 @@ export default {
         )
         return data
       },
+      async addOrUpdateUserPolicy(organizationId, userId, policyInstance) {
+        const {data} = await Vue.axios.put(
+          `/authorization/users/${encodeURIComponent(userId)}/policies`,
+          {policies: [policyInstance]},
+          {
+            headers: {org: organizationId}
+          }
+        )
+        return data
+      },
       async removeTeamPolicy(organizationId, teamId, policyId) {
         const {data} = await Vue.axios.delete(
           `/authorization/teams/${encodeURIComponent(teamId)}/policies/${encodeURIComponent(policyId)}`,
@@ -187,6 +197,16 @@ export default {
       async removeOrganizationPolicy(organizationId, policyId) {
         const {data} = await Vue.axios.delete(
           `/authorization/organizations/${encodeURIComponent(organizationId)}/policies/${encodeURIComponent(policyId)}`,
+          {
+            headers: {org: organizationId}
+          }
+        )
+        return data
+      },
+      async addOrUpdateOrganizationPolicy(organizationId, policyInstance) {
+        const {data} = await Vue.axios.put(
+          `/authorization/organizations/${encodeURIComponent(organizationId)}/policies`,
+          {policies: [policyInstance]},
           {
             headers: {org: organizationId}
           }

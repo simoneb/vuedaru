@@ -5,6 +5,7 @@
       :policies="organization.policies" 
       :organizationId="organizationId" 
       :deleteAssociation="removePolicyInstance"
+      :addAssociation="addPolicyInstance"
     />
   </div>
 </template>
@@ -45,6 +46,10 @@ export default {
     },
     async removePolicyInstance(policyId) {
       await this.$udaru.removeOrganizationPolicy(this.organizationId, policyId)
+      await this.loadOrganizationData()
+    },
+    async addPolicyInstance(policyInstance) {
+      await this.$udaru.addOrUpdateOrganizationPolicy(this.organizationId, policyInstance)
       await this.loadOrganizationData()
     },
     async loadOrganizationData() {

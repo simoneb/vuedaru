@@ -34,6 +34,7 @@
       :policies="user.policies" 
       :organizationId="organizationId" 
       :deleteAssociation="removePolicyInstance"
+      :addAssociation="addPolicyInstance"
     />
   </div>
 </template>
@@ -102,6 +103,10 @@ export default {
     },
     async removePolicyInstance(policyId) {
       await this.$udaru.removeUserPolicy(this.organizationId, this.userId, policyId)
+      await this.loadUserData()
+    },
+    async addPolicyInstance(policyInstance) {
+      await this.$udaru.addOrUpdateUserPolicy(this.organizationId, this.userId, policyInstance)
       await this.loadUserData()
     },
     loadUserData() {
