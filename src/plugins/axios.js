@@ -1,20 +1,18 @@
 import Axios from 'axios'
 
-export default function plugin(Vue) {
-  if (plugin.installed) return
+export default {
+  install(Vue) {
+    const axios = Axios.create()
 
-  plugin.installed = true
+    axios.interceptors.request.use(config => {
+      config.baseURL = Vue.settings.getUrl()
 
-  const axios = Axios.create()
+      if (!config.headers.authorization) {
+        config.headers.authorization = Vue.settings.getUserId()
+      }
+      return config
+    })
 
-  axios.interceptors.request.use(config => {
-    config.baseURL = Vue.settings.getUrl()
-
-    if (!config.headers.authorization) {
-      config.headers.authorization = Vue.settings.getUserId()
-    }
-    return config
-  })
-
-  Vue.prototype.$axios = Vue.axios = axios
+    Vue.prototype.$axios = Vue.axios = axios
+  }
 }
