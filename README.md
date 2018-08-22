@@ -14,7 +14,7 @@ A user interface written in Vue for [Udaru](https://github.com/nearform/udaru).
 
 This is just a HTML+JS+CSS application, you will need to have a Udaru server running and connect this to it.
 
-A basic setup can be obtained by following the instructions in the Udaru [readme](https://github.com/nearform/udaru).
+You can run this against an existing instance of Udaru or a basic setup can be obtained by following the instructions in the Udaru [readme](https://github.com/nearform/udaru).
 
 ## Project setup
 ```

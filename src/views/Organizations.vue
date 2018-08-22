@@ -33,3 +33,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.md-toolbar-section-end {
+  padding-right: 50px;
+}
+</style>

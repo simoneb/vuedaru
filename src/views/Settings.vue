@@ -74,6 +74,7 @@
         </div>
       </md-content>
     </div>
+    <github-corner />
   </md-app-content>
 </md-app>
 </template>
@@ -88,11 +89,13 @@ const STEPS = {
 import Axios from 'axios'
 
 import ToolbarLogo from '../components/ToolbarLogo'
+import GithubCorner from '../components/GithubCorner'
 
 export default {
   name: 'settings',
   components: {
-    ToolbarLogo
+    ToolbarLogo,
+    GithubCorner
   },
   data: () => ({
     STEPS,
