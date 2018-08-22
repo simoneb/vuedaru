@@ -1,4 +1,4 @@
 module.exports = {
   outputDir: 'docs',
-  baseUrl: process.env === 'production' ? '/vuedaru/' : '/'
+  baseUrl: process.env.NODE_ENV === 'production' ? '/vuedaru/' : '/'
 }

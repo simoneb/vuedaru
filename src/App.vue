@@ -3,18 +3,21 @@
     <health-check />
     <router-view/>
     <snackbar />
+    <github-corner />
   </div>
 </template>
 
 <script>
 import HealthCheck from './components/HealthCheck.vue'
 import Snackbar from './components/Snackbar.vue'
+import GithubCorner from './components/GithubCorner.vue'
 
 export default {
   name: 'app',
   components: {
     HealthCheck,
-    Snackbar
+    Snackbar,
+    GithubCorner
   }
 }
 </script>

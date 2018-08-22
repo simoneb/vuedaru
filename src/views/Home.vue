@@ -7,7 +7,10 @@
       </div>
       <div class="md-toolbar-section-end">
         <md-progress-spinner v-show="loading" class="md-accent" :md-diameter="30" :md-stroke="3" md-mode="indeterminate"></md-progress-spinner>
-        <md-button class="md-icon-button" :to="{name: 'settings'}"><md-icon>settings</md-icon></md-button>
+        <md-button class="md-icon-button" :to="{name: 'settings'}">
+          <md-icon>settings</md-icon>
+          <md-tooltip>Settings</md-tooltip>
+        </md-button>
       </div>
     </md-app-toolbar>
     <md-app-drawer md-permanent="clipped">
@@ -76,5 +79,9 @@ export default {
 .md-drawer {
   width: 220px;
   max-width: calc(100vw - 125px);
+}
+
+.md-toolbar-section-end {
+  padding-right: 50px;
 }
 </style>
