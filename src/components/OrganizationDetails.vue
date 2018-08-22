@@ -14,7 +14,7 @@
                 <md-input 
                   id="id" 
                   name="id"
-                  v-validate="'required|udaru_id'"
+                  v-validate="{required: true, udaru_id: true, excluded: organizationIds}"
                   autofocus 
                   :readonly="!creating"
                   v-model="localOrganization.id" 
@@ -91,7 +91,11 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 import validationMixin from '../mixins/validationMixin'
+import {mapActions} from '../state/utils'
+import {loadOrganizations} from '../state/actions'
 
 export default {
   name: 'organization-details',
@@ -109,11 +113,16 @@ export default {
     }
   },
   computed: {
+    ...mapState(['organizations']),
+    organizationIds() {
+      return this.creating && (this.organizations || []).map(({id}) => id)
+    },
     creating() {
       return !this.organization.id
     }
   },
   methods: {
+    ...mapActions(loadOrganizations),
     async validate() {
       if (await this.$validator.validateAll()) {
         const organization = {...this.localOrganization}
@@ -134,6 +143,9 @@ export default {
         metadata: JSON.stringify(this.organization.metadata, null, 2)
       }
     }
+  },
+  created() {
+    this.loadOrganizations()
   }
 }
 </script>

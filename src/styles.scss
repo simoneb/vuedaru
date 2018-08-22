@@ -23,11 +23,12 @@ html, body, .app, .md-app, .md-app-content {
     @extend .md-primary;
   }
 
+  // add padding to eveything except tables which have enough margin
+  > .md-content:not(.md-table) {
+    padding-top: 15px;
+  }
+
   > .md-content.md-theme-default {
     border: 1px solid md-theme(primary); 
-
-    form:first-child {
-      margin-top: 20px;
-    }
   }
 }

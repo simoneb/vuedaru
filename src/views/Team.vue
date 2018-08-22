@@ -1,6 +1,6 @@
 <template>
   <div v-if="team">
-    <team-details @submit="updateTeam" :team="team"></team-details>
+    <team-details @submit="updateTeam" :team="team" :organizationId="organizationId"></team-details>
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Users</span>

@@ -15,7 +15,7 @@
               <md-input 
                 id="id" 
                 name="id"
-                v-validate="'required|udaru_id'" 
+                v-validate="{required:true, udaru_id: true, excluded: teamIds}" 
                 autofocus 
                 :readonly="!creating" 
                 v-model="localTeam.id" 
@@ -92,12 +92,20 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 import validationMixin from '../mixins/validationMixin'
+import {loadTeams} from '../state/actions'
+import {mapActions} from '../state/utils'
 
 export default {
   name: 'team-details',
   mixins: [validationMixin],
   props: {
+    organizationId: {
+      type: String,
+      required: true
+    },
     team: {
       type: Object,
       default: () => ({
@@ -110,11 +118,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getTeams']),
+    teamIds() {
+      return this.creating && (this.getTeams(this.organizationId) || []).map(({id}) => id)
+    },
     creating() {
       return !this.team.id
     }
   },
   methods: {
+    ...mapActions(loadTeams),
     async validate() {
       if (await this.$validator.validateAll()) {
         const team = {...this.localTeam}
@@ -132,6 +145,9 @@ export default {
     return {
       localTeam: {...this.team, metadata: JSON.stringify(this.team.metadata, null, 2)}
     }
+  },
+  created() {
+    this.loadTeams(this.organizationId)
   }
 }
 </script>

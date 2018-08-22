@@ -20,6 +20,16 @@ export default {
       validate: value => /^[A-Za-z0-9_-]+$/.test(value)
     })
 
+    const dict = {
+      custom: {
+        id: {
+          excluded: 'The id field should be unique'
+        }
+      }
+    }
+
+    Validator.localize('en', dict)
+
     Vue.use(VeeValidate)
   }
 }

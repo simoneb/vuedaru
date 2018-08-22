@@ -1,5 +1,5 @@
 <template>
-  <user-details @submit="doCreateUser" />
+  <user-details @submit="doCreateUser" :organizationId="organizationId" />
 </template>
 
 <script>

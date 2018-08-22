@@ -1,7 +1,7 @@
 <template>
   <div v-if="policy">
     <service-key-dialog :operation="serviceKeyOperation" @cancel="onCancel" />
-    <policy-details @submit="doUpdatePolicy" :policy="policy" />
+    <policy-details @submit="doUpdatePolicy" :policy="policy" :organizationId="organizationId" />
     <policy-statements @submit="doUpdatePolicy" :policy="policy" />
     <policy-instances :organization-id="organizationId" :policy-id="policyId" />
   </div>

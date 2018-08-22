@@ -115,7 +115,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .description {
-  margin: 10px 0 20px 20px;
+  margin: 0px 0 20px 20px;
 }
 .result {
   margin: 15px 0;

@@ -30,7 +30,7 @@
         </md-table-empty-state>
 
         <md-table-row slot="md-table-row" slot-scope="{item}">
-          <md-table-cell md-label="ID">
+          <md-table-cell class="user-id" md-label="ID">
             <router-link :to="{name: 'user', params: {organizationId, userId: item.id}}">
               {{item.id}}
             </router-link>
@@ -38,10 +38,10 @@
           <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
           <md-table-cell md-label="Metadata"><metadata :value="item.metadata" /></md-table-cell>
           <md-table-cell md-label="Actions">
-            <md-button @click="deleteUser(item.id)" class="md-icon-button md-dense md-primary">
+            <md-button @click="deleteUser(item.id)" :disabled="isCurrentUser(item.id)" class="md-icon-button md-dense md-primary">
               <md-icon>delete</md-icon>
-              <md-tooltip>Delete user</md-tooltip>
             </md-button>
+            <md-tooltip>{{isCurrentUser(item.id) ? 'You cannot delete your own user' : 'Delete user'}}</md-tooltip>
           </md-table-cell>
         </md-table-row>
       </md-table>
@@ -94,10 +94,6 @@ export default {
       this.searchResults = searchByName(this.getUsers(this.organizationId), this.search)
     },
     deleteUser(idToDelete) {
-      if (this.isCurrentUser(idToDelete)) {
-        return this.changeSnackbarMessage({message: 'You cannot delete yourself!'})
-      }
-
       this.idToDelete = idToDelete
     },
     async onConfirm() {
@@ -132,5 +128,10 @@ export default {
   flex-direction: column;
   flex: 1;
   justify-content: space-between;
+}
+
+.spacer {
+  width: 35px;
+  display: inline-block;
 }
 </style>

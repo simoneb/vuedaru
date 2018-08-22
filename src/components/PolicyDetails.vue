@@ -15,7 +15,7 @@
               <md-input 
                 id="id" 
                 name="id"
-                v-validate="'required|udaru_id'" 
+                v-validate="{required: true, udaru_id: true, excluded: policyIds}" 
                 autofocus 
                 :readonly="!creating" 
                 v-model="localPolicy.id" 
@@ -55,12 +55,20 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 import validationMixin from '../mixins/validationMixin'
+import {mapActions} from '../state/utils'
+import {loadPolicies} from '../state/actions'
 
 export default {
   name: 'policy-details',
   mixins: [validationMixin],
   props: {
+    organizationId: {
+      type: String,
+      required: true
+    },
     policy: {
       type: Object,
       default: () => ({
@@ -72,11 +80,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getPolicies']),
+    policyIds() {
+      return this.creating && (this.getPolicies(this.organizationId) || []).map(({id}) => id)
+    },
     creating() {
       return !this.policy.id
     }
   },
   methods: {
+    ...mapActions(loadPolicies),
     async validate() {
       if (await this.$validator.validateAll()) {
         this.$emit('submit', this.localPolicy)
@@ -87,6 +100,9 @@ export default {
     return {
       localPolicy: {...this.policy}
     }
+  },
+  created() {
+    this.loadPolicies(this.organizationId)
   }
 }
 </script>

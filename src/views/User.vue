@@ -1,6 +1,6 @@
 <template>
   <div v-if="user">
-    <user-details @success="loadUserData" :user="user" />
+    <user-details @submit="updateUser" :user="user" :organizationId="organizationId" />
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">Teams</span>

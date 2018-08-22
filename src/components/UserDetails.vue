@@ -15,7 +15,7 @@
               <md-input 
                 id="id" 
                 name="id"
-                v-validate="'required|udaru_id'" 
+                v-validate="{required: true, udaru_id: true, excluded: userIds}" 
                 autofocus 
                 :readonly="!creating" 
                 v-model="localUser.id" 
@@ -55,12 +55,20 @@
 </template>
 
 <script>
+import {mapGetters} from 'vuex'
+
 import validationMixin from '../mixins/validationMixin'
+import {loadUsers} from '../state/actions'
+import {mapActions} from '../state/utils'
 
 export default {
   name: 'user-details',
   mixins: [validationMixin],
   props: {
+    organizationId: {
+      type: String,
+      required: true
+    },
     user: {
       type: Object,
       default: () => ({
@@ -71,11 +79,16 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getUsers']),
+    userIds() {
+      return this.creating && (this.getUsers(this.organizationId) || []).map(({id}) => id)
+    },
     creating() {
       return !this.user.id
     }
   },
   methods: {
+    ...mapActions(loadUsers),
     async validate() {
       if (await this.$validator.validateAll()) {
         this.$emit('submit', this.localUser)
@@ -86,6 +99,9 @@ export default {
     return {
       localUser: {...this.user, metadata: JSON.stringify(this.user.metadata, null, 2)}
     }
+  },
+  created() {
+    this.loadUsers(this.organizationId)
   }
 }
 </script>

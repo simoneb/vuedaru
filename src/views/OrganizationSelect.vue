@@ -16,7 +16,7 @@
           :to="{name: 'organization', params: {organizationId: id}}">
           <template v-if="isCurrentOrganization(id)">
             <md-icon class="md-primary">check_circle_outline</md-icon>
-            <md-tooltip>Current organization</md-tooltip>
+            <md-tooltip>Current user organization</md-tooltip>
           </template>
           <div class="md-list-item-text">
             <span>{{id}}</span>

@@ -1,7 +1,7 @@
 <template>
 <div>
   <service-key-dialog :operation="serviceKeyOperation" @cancel="onCancel" />
-  <policy-details @submit="doCreatePolicy" />
+  <policy-details @submit="doCreatePolicy" :organizationId="organizationId" />
 </div>
 </template>
 
