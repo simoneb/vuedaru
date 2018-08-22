@@ -1,6 +1,6 @@
 # vuedaru
 
-A user interface written in Vue for [udaru](https://github.com/nearform/udaru).
+A user interface written in Vue for [Udaru](https://github.com/nearform/udaru).
 
 ## Technology
 
@@ -9,6 +9,12 @@ A user interface written in Vue for [udaru](https://github.com/nearform/udaru).
 - _vue-router_ for routing
 - _vuex_ for state management
 - _vee-validate_ for client side validation
+
+## Requirements
+
+This is just a HTML+JS+CSS application, you will need to have a Udaru server running and connect this to it.
+
+A basic setup can be obtained by following the instructions in the Udaru [readme](https://github.com/nearform/udaru).
 
 ## Project setup
 ```
