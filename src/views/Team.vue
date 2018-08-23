@@ -32,6 +32,42 @@
         </md-table-row>
       </md-table>
     </div>
+
+    <div class="section">
+      <md-toolbar md-elevation="0">
+        <span class="md-title" style="flex: 1">Nested teams</span>
+        <team-select 
+          :selectedTeamId="selectedTeamId" 
+          @selected="teamId => selectedTeamId = teamId" 
+          :exclude="nestedTeams.concat([team])" 
+          :organizationId="organizationId" 
+        />
+        <md-button :disabled="!selectedTeamId" @click="addNestedTeam(selectedTeamId)">Add nested team</md-button>
+      </md-toolbar>
+
+      <md-table v-model="nestedTeams">
+        <md-table-empty-state 
+          md-label="No teams"
+          md-description="The team doesn't have any nested teams">
+        </md-table-empty-state>
+        
+        <md-table-row slot="md-table-row" slot-scope="{item}">
+          <md-table-cell md-label="ID">
+            <router-link :to="{name: 'team', params: {organizationId, teamId: item.id}}">
+            {{item.id}}
+            </router-link>
+          </md-table-cell>
+          <md-table-cell md-label="Name">{{item.name}}</md-table-cell>
+          <md-table-cell md-label="Actions">
+            <md-button class="md-icon-button md-primary" @click="removeNestedTeam(item.id)">
+              <md-icon>delete</md-icon>
+              <md-tooltip>Remove nested team</md-tooltip>
+            </md-button>
+          </md-table-cell>
+        </md-table-row>
+      </md-table>
+    </div>
+
     <policy-associations 
       :policies="team.policies" 
       :organizationId="organizationId"
@@ -43,12 +79,14 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {defaultTo, flow, filter} from 'lodash/fp'
 
 import {mapActions} from '../state/utils'
-import {addUserToTeam, loadTeam, removeUserFromTeam, changeSnackbarMessage} from '../state/actions'
+import {addUserToTeam, loadTeam, removeUserFromTeam, changeSnackbarMessage, loadTeams} from '../state/actions'
 import PolicyAssociations from '../components/PolicyAssociations'
 import UserSelect from '../components/UserSelect'
 import TeamDetails from '../components/TeamDetails'
+import TeamSelect from '../components/TeamSelect'
 
 export default {
   name: 'team',
@@ -59,21 +97,30 @@ export default {
   components: {
     PolicyAssociations,
     UserSelect,
+    TeamSelect,
     TeamDetails
   },
   data() {
     return {
-      selectedUserId: null
+      selectedUserId: null,
+      selectedTeamId: null
     }
   },
   computed: {
-    ...mapGetters(['getTeam']),
+    ...mapGetters(['getTeam', 'getTeams']),
     team() {
       return this.getTeam(this.organizationId, this.teamId)
+    },
+    nestedTeams() {
+      return flow(
+        defaultTo([]),
+        filter(({id}) => id !== this.teamId),
+        filter(({path}) => path.includes(this.teamId))
+      )(this.getTeams(this.organizationId))
     }
   },
   methods: {
-    ...mapActions([loadTeam, addUserToTeam, removeUserFromTeam, changeSnackbarMessage]),
+    ...mapActions([loadTeam, loadTeams, addUserToTeam, removeUserFromTeam, changeSnackbarMessage]),
     async updateTeam({name, description, metadata}) {
       try {
         await this.$udaru.updateTeam(this.organizationId, this.teamId, {name, description, metadata})
@@ -117,12 +164,26 @@ export default {
       await this.$udaru.addOrUpdateTeamPolicy(this.organizationId, this.teamId, policyInstance)
       await this.loadTeamData()
     },
+    async removeNestedTeam(teamId) {
+      await this.$udaru.removeNestedTeam(this.organizationId, teamId)
+      await this.loadTeamData()
+      await this.loadTeamsData()
+    },
+    async addNestedTeam(teamId) {
+      await this.$udaru.addNestedTeam(this.organizationId, this.teamId, teamId)
+      await this.loadTeamData()
+      await this.loadTeamsData()
+    },
+    loadTeamsData() {
+      this.loadTeams(this.organizationId)
+    },
     loadTeamData() {
       this.loadTeam({organizationId: this.organizationId, teamId: this.teamId})
     }
   },
   created() {
     this.loadTeamData()
+    this.loadTeamsData()
   }
 }
 </script>
