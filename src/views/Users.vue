@@ -26,7 +26,7 @@
 
         <md-table-empty-state
           md-label="No users found"
-          :md-description="`No user found for this '${search}' query. Try a different search term or create a new user.`">
+          :md-description="search && `No user found for this '${search}' query. Try a different search term or create a new user.`">
         </md-table-empty-state>
 
         <md-table-row slot="md-table-row" slot-scope="{item}">

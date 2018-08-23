@@ -25,7 +25,7 @@
 
         <md-table-empty-state
           md-label="No teams found"
-          :md-description="`No team found for this '${search}' query. Try a different search term or create a new team.`">
+          :md-description="search && `No team found for this '${search}' query. Try a different search term or create a new team.`">
         </md-table-empty-state>
 
         <md-table-row slot="md-table-row" slot-scope="{item}">

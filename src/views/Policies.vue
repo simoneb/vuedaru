@@ -19,7 +19,7 @@
 
         <md-table-empty-state
           md-label="No policies found"
-          :md-description="`No policy found for this '${search}' query. Try a different search term or create a new policy.`">
+          :md-description="search && `No policy found for this '${search}' query. Try a different search term or create a new policy.`">
         </md-table-empty-state>
 
         <md-table-row slot="md-table-row" slot-scope="{item}">
