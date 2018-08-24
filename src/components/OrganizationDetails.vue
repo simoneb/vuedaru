@@ -1,6 +1,5 @@
 <template>
   <form @submit.prevent="validate" :key="organization.id" :data-vv-scope="organization.id" novalidate autocomplete="off">
-    {{fields}}
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">{{creating ? 'Create organization' : 'Organization'}}</span>
