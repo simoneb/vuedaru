@@ -1,9 +1,10 @@
 <template>
-  <form @submit.prevent="validate" novalidate autocomplete="off">
+  <form @submit.prevent="validate" :key="organization.id" :data-vv-scope="organization.id" novalidate autocomplete="off">
+    {{fields}}
     <div class="section">
       <md-toolbar md-elevation="0">
         <span class="md-title" style="flex: 1">{{creating ? 'Create organization' : 'Organization'}}</span>
-        <md-button :disabled="!isFormChanged" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
+        <md-button :disabled="!isFormChanged(organization.id)" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
       </md-toolbar>
       <md-content>
         <div class="md-layout md-alignment-center-center">
@@ -121,6 +122,11 @@ export default {
       return !this.organization.id
     }
   },
+  watch: {
+    organization() {
+      this.createLocalOrganization()
+    }
+  },
   methods: {
     ...mapActions(loadOrganizations),
     async validate() {
@@ -134,14 +140,17 @@ export default {
 
         this.$emit('submit', organization)
       }
+    },
+    createLocalOrganization() {
+      return (this.localOrganization = {
+        ...this.organization,
+        metadata: JSON.stringify(this.organization.metadata, null, 2)
+      })
     }
   },
   data() {
     return {
-      localOrganization: {
-        ...this.organization,
-        metadata: JSON.stringify(this.organization.metadata, null, 2)
-      }
+      localOrganization: this.createLocalOrganization()
     }
   },
   created() {

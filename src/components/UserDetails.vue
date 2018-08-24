@@ -1,10 +1,10 @@
 <template>
-<form @submit.prevent="validate" novalidate autocomplete="off">
+<form @submit.prevent="validate" :key="user.id" :data-vv-scope="user.id" novalidate autocomplete="off">
   <div class="section">
     <md-toolbar md-elevation="0">
       <span class="md-title" style="flex: 1">{{creating ? 'Create user' : 'User'}}</span>
-      <md-button @click="$router.go(-1)">Cancel</md-button>
-      <md-button :disabled="!isFormChanged" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
+      <md-button @click="creating && $router.go(-1)">Cancel</md-button>
+      <md-button :disabled="!isFormChanged(localUser.id)" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
     </md-toolbar>
     <md-content>
       <div class="md-layout md-alignment-center-center">
@@ -87,17 +87,25 @@ export default {
       return !this.user.id
     }
   },
+  watch: {
+    user() {
+      this.createLocalUser()
+    }
+  },
   methods: {
     ...mapActions(loadUsers),
     async validate() {
       if (await this.$validator.validateAll()) {
         this.$emit('submit', this.localUser)
       }
+    },
+    createLocalUser() {
+      return (this.localUser = {...this.user, metadata: JSON.stringify(this.user.metadata, null, 2)})
     }
   },
   data() {
     return {
-      localUser: {...this.user, metadata: JSON.stringify(this.user.metadata, null, 2)}
+      localUser: this.createLocalUser()
     }
   },
   created() {

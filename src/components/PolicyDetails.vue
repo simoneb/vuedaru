@@ -3,8 +3,8 @@
   <div class="section">
     <md-toolbar md-elevation="0">
       <span class="md-title" style="flex: 1">{{creating ? 'Create policy' : 'Policy'}}</span>
-      <md-button @click="$router.go(-1)">Cancel</md-button>
-      <md-button :disabled="!isFormChanged" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
+      <md-button @click="creating && $router.go(-1)">Cancel</md-button>
+      <md-button :disabled="!isFormChanged()" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
     </md-toolbar>
     <md-content>
       <div class="md-layout md-alignment-center-center">

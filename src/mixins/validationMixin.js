@@ -1,7 +1,9 @@
 const validationMixin = {
-  computed: {
-    isFormChanged() {
-      return Object.keys(this.fields).some(field => this.fields[field].changed)
+  methods: {
+    isFormChanged(scope) {
+      const root = scope ? (this.fields && this.fields[`$${scope}`]) || {} : this.fields
+
+      return Object.keys(root).some(field => root[field].changed)
     }
   }
 }

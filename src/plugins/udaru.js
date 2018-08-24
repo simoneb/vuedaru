@@ -195,9 +195,13 @@ export default {
         return data
       },
       async removeNestedTeam(organizationId, nestedTeamId) {
-        const {data} = await Vue.axios.put(`/authorization/teams/${encodeURIComponent(nestedTeamId)}/unnest`, {
-          headers: {org: organizationId}
-        })
+        const {data} = await Vue.axios.put(
+          `/authorization/teams/${encodeURIComponent(nestedTeamId)}/unnest`,
+          {},
+          {
+            headers: {org: organizationId}
+          }
+        )
         return data
       },
       async addNestedTeam(organizationId, teamId, nestedTeamId) {

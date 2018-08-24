@@ -1,10 +1,10 @@
 <template>
-<form @submit.prevent="validate" novalidate autocomplete="off">
+<form @submit.prevent="validate" :key="team.id" :data-vv-scope="team.id" novalidate autocomplete="off">
   <div class="section">
     <md-toolbar md-elevation="0">
       <span class="md-title" style="flex: 1">{{creating ? 'Create team' : 'Team'}}</span>
-      <md-button @click="$router.go(-1)">Cancel</md-button>
-      <md-button :disabled="!isFormChanged" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
+      <md-button @click="creating && $router.go(-1)">Cancel</md-button>
+      <md-button :disabled="!isFormChanged(localTeam.id)" type="submit">{{creating ? 'Create' : 'Save'}}</md-button>
     </md-toolbar>
     <md-content>
       <div class="md-layout md-alignment-center-center">
@@ -117,6 +117,11 @@ export default {
       })
     }
   },
+  watch: {
+    team() {
+      this.createLocalTeam()
+    }
+  },
   computed: {
     ...mapGetters(['getTeams']),
     teamIds() {
@@ -139,14 +144,17 @@ export default {
 
         this.$emit('submit', team)
       }
+    },
+    createLocalTeam() {
+      return (this.localTeam = {...this.team, metadata: JSON.stringify(this.team.metadata, null, 2)})
     }
   },
   data() {
     return {
-      localTeam: {...this.team, metadata: JSON.stringify(this.team.metadata, null, 2)}
+      localTeam: this.createLocalTeam()
     }
   },
-  created() {
+  mounted() {
     this.loadTeams(this.organizationId)
   }
 }

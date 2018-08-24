@@ -39,7 +39,7 @@
         <team-select 
           :selectedTeamId="selectedTeamId" 
           @selected="teamId => selectedTeamId = teamId" 
-          :exclude="nestedTeams.concat([team])" 
+          :exclude="nestedTeams.concat(parentTeams).concat([team])" 
           :organizationId="organizationId" 
         />
         <md-button :disabled="!selectedTeamId" @click="addNestedTeam(selectedTeamId)">Add nested team</md-button>
@@ -114,9 +114,20 @@ export default {
     nestedTeams() {
       return flow(
         defaultTo([]),
-        filter(({id}) => id !== this.teamId),
-        filter(({path}) => path.includes(this.teamId))
+        filter(({id, path}) => path.includes(`${this.teamId}.${id}`))
       )(this.getTeams(this.organizationId))
+    },
+    parentTeams() {
+      return flow(
+        defaultTo([]),
+        filter(({id}) => this.team.path.includes(`${id}.`))
+      )(this.getTeams(this.organizationId))
+    }
+  },
+  watch: {
+    $route() {
+      this.loadTeamData()
+      this.loadTeamsData()
     }
   },
   methods: {
@@ -171,6 +182,9 @@ export default {
     },
     async addNestedTeam(teamId) {
       await this.$udaru.addNestedTeam(this.organizationId, this.teamId, teamId)
+
+      this.selectedTeamId = null
+
       await this.loadTeamData()
       await this.loadTeamsData()
     },
