@@ -52,7 +52,7 @@
 <script>
 import {mapGetters, mapState} from 'vuex'
 
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadUsers, changeSnackbarMessage, loadCurrentUser} from '../state/actions'
 import Metadata from '../components/Metadata'
 

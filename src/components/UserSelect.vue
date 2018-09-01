@@ -13,7 +13,7 @@
 import {mapGetters} from 'vuex'
 import {differenceBy} from 'lodash/fp'
 
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadUsers} from '../state/actions'
 
 export default {

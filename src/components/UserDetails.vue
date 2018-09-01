@@ -59,7 +59,7 @@ import {mapGetters} from 'vuex'
 
 import validationMixin from '../mixins/validationMixin'
 import {loadUsers} from '../state/actions'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 
 export default {
   name: 'user-details',

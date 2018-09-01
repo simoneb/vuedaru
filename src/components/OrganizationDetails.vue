@@ -94,7 +94,7 @@
 import {mapState} from 'vuex'
 
 import validationMixin from '../mixins/validationMixin'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadOrganizations} from '../state/actions'
 
 export default {

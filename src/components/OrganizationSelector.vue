@@ -20,7 +20,7 @@
 <script>
 import {mapState} from 'vuex'
 
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadOrganizations} from '../state/actions'
 
 export default {

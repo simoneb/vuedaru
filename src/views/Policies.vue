@@ -65,7 +65,7 @@
 import {mapGetters} from 'vuex'
 
 import {loadPolicies, changeSnackbarMessage} from '../state/actions'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import ServiceKeyDialog from '../components/ServiceKeyDialog'
 
 const toLower = text => text.toString().toLowerCase()

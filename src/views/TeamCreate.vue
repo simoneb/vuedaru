@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {changeSnackbarMessage, createTeam} from '../state/actions'
 import TeamDetails from '../components/TeamDetails'
 

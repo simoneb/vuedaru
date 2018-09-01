@@ -50,7 +50,7 @@
 </template>
 <script>
 import {changeSnackbarMessage} from '../state/actions'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import AddPolicyAssociation from '../components/AddPolicyAssociation'
 import Metadata from '../components/Metadata'
 

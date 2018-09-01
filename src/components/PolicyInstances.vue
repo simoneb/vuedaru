@@ -31,7 +31,7 @@
 import {mapGetters} from 'vuex'
 
 import {loadPolicyInstances} from '../state/actions'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import Metadata from './Metadata'
 
 export default {

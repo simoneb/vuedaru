@@ -37,7 +37,7 @@
 <script>
 import {mapState} from 'vuex'
 
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadOrganizations, loadCurrentUser, changeSnackbarMessage} from '../state/actions'
 
 export default {

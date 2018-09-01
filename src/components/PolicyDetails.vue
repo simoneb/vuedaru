@@ -58,7 +58,7 @@
 import {mapGetters} from 'vuex'
 
 import validationMixin from '../mixins/validationMixin'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadPolicies} from '../state/actions'
 
 export default {

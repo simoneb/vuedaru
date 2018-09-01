@@ -13,7 +13,7 @@
 <script>
 import {mapGetters} from 'vuex'
 
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {loadOrganization, changeSnackbarMessage} from '../state/actions'
 import PolicyAssociations from '../components/PolicyAssociations'
 import OrganizationDetails from '../components/OrganizationDetails'

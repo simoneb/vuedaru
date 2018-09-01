@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {changeSnackbarMessage, createPolicy} from '../state/actions'
 import PolicyDetails from '../components/PolicyDetails'
 import ServiceKeyDialog from '../components/ServiceKeyDialog'

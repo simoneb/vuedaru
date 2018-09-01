@@ -53,7 +53,7 @@
 import {mapGetters} from 'vuex'
 
 import {loadTeams, changeSnackbarMessage} from '../state/actions'
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import Metadata from '../components/Metadata'
 
 const toLower = text => text.toString().toLowerCase()

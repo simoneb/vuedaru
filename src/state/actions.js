@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import {createAction} from 'vuex-function-actions'
 
 import {
   setLoading,
@@ -15,27 +16,12 @@ import {
   setCurrentUser,
   setPolicyInstances
 } from './mutations'
-import {createAction} from './utils'
-
-const patchContext = context => {
-  const dispatch = context.dispatch
-
-  context.dispatch = function(action, ...args) {
-    if (typeof action === 'function' && typeof action.type === 'string') {
-      return dispatch.call(context, action.type, ...args)
-    }
-
-    return dispatch.call(context, action, ...args)
-  }
-
-  return context
-}
 
 export const createLoadingAction = (type, action) => {
   return createAction(type, async function(context, ...args) {
     try {
       context.commit(setLoading())
-      await action(patchContext(context), ...args)
+      await action(context, ...args)
     } finally {
       context.commit(unsetLoading())
     }

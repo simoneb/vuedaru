@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import {mapMutations} from 'vuex-function-actions'
 
 import {
   createOrganization,
@@ -35,7 +36,6 @@ import {
   setCurrentUser,
   setPolicyInstances
 } from './state/mutations'
-import {mapMutations} from './state/utils'
 
 Vue.use(Vuex)
 

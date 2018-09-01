@@ -9,12 +9,12 @@
 
 <script>
 import {mapGetters} from 'vuex'
+import {mapActions} from 'vuex-function-actions'
 
 import PolicyDetails from '../components/PolicyDetails.vue'
 import PolicyStatements from '../components/PolicyStatements.vue'
 import PolicyInstances from '../components/PolicyInstances.vue'
 import ServiceKeyDialog from '../components/ServiceKeyDialog.vue'
-import {mapActions} from '../state/utils.js'
 import {loadPolicy, changeSnackbarMessage} from '../state/actions.js'
 
 export default {

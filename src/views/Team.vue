@@ -81,7 +81,7 @@
 import {mapGetters} from 'vuex'
 import {defaultTo, flow, filter} from 'lodash/fp'
 
-import {mapActions} from '../state/utils'
+import {mapActions} from 'vuex-function-actions'
 import {addUserToTeam, loadTeam, removeUserFromTeam, changeSnackbarMessage, loadTeams} from '../state/actions'
 import PolicyAssociations from '../components/PolicyAssociations'
 import UserSelect from '../components/UserSelect'

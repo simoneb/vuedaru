@@ -1,4 +1,4 @@
-import {createMutation} from './utils'
+import {createMutation} from 'vuex-function-actions'
 
 export const setOrganizations = createMutation('organizations', (state, {organizations}) => {
   state.organizations = organizations
